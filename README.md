@@ -1,0 +1,1 @@
+# krasa-studio-ok
