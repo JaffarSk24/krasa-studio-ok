@@ -1,20 +1,148 @@
-# Krasa Studio OK
 
-PHP-based multilingual booking website for Krása štúdio "OK" (Slovak / Russian / Ukrainian).
-Designed for simple shared-hosting deployment. Features booking form, localized UI, Telegram notifications and Google reCAPTCHA protection.
+# Krása štúdio "OK" - Website
 
-## Features
-- Multilingual front-end (sk / ru / ua) via `translations.php`
-- Booking form with fields: Service, Date, Time, Name, Phone, Message
-- Date input limited from today to +30 days, client-side time-slot loading
-- Server-side booking API and validations
-- Telegram notifications localized to user's language
-- Google reCAPTCHA verification
-- Simple slot-blocking mechanism (file-based or DB)
-- Minimal admin/DB setup via `setup.php`
-- `.htaccess` tuned for security on shared hosting
+Профессиональный мультиязычный сайт для салона красоты в Братиславе.
 
-## Tech stack
-- PHP (7.4+ recommended)
-- MySQL / MariaDB
-- Vanilla JavaScript (client logic in `main.j
+## Особенности
+
+- **Мультиязычность**: Словацкий (основной), Русский, Украинский
+- **Современный дизайн**: Responsive дизайн с использованием TailwindCSS
+- **Полная функциональность**: Система бронирования, контактные формы, галерея, блог
+- **Интеграции**: 
+  - Telegram Bot для уведомлений
+  - Google reCAPTCHA v3 для защиты форм
+  - Google Maps для отображения местоположения
+  - WhatsApp кнопки для быстрой связи
+- **SEO оптимизация**: Мета-теги, структурированные данные, индексируемый контент
+
+## Технологии
+
+- **Backend**: PHP 7.4+
+- **База данных**: MySQL/MariaDB
+- **Frontend**: HTML5, CSS3 (TailwindCSS), JavaScript
+- **Админка**: Готова для интеграции с Textolite v2.12e Extended
+
+## Установка
+
+1. **Загрузка файлов**
+   ```bash
+   # Загрузить все файлы на ваш хостинг Webglobe
+   ```
+
+2. **Настройка базы данных**
+   - Создайте базу данных MySQL/MariaDB
+   - Отредактируйте `includes/config.php`:
+   ```php
+   define('DB_HOST', 'ваш_хост');
+   define('DB_NAME', 'имя_базы_данных');
+   define('DB_USER', 'пользователь');
+   define('DB_PASS', 'пароль');
+   ```
+
+3. **Инициализация**
+   - Откройте `setup.php?key=krasa_studio_setup_2024` в браузере
+   - Дождитесь завершения установки
+   - **ВАЖНО**: Удалите файл `setup.php` после установки!
+
+4. **Настройка интеграций**
+   - Telegram Bot: настроен токен в config.php
+   - reCAPTCHA: ключи уже настроены в config.php
+   - Google Maps: готовый iframe в contacts.php
+
+## Структура проекта
+
+```
+krasa_studio_php/
+├── includes/           # Основные PHP файлы
+│   ├── config.php     # Конфигурация
+│   ├── database.php   # Работа с БД
+│   ├── functions.php  # Вспомогательные функции
+│   ├── header.php     # Шапка сайта
+│   ├── footer.php     # Подвал сайта
+│   ├── header-extra.php # Дополнительные мета-теги
+│   └── body-extra.php   # Дополнительные скрипты
+├── assets/            # Ресурсы
+│   ├── css/          # Стили
+│   ├── js/           # JavaScript
+│   └── images/       # Изображения
+├── api/              # API эндпоинты
+├── lang/             # Файлы переводов
+├── admin/            # Папка для Textolite админки
+├── index.php         # Главная страница
+├── about.php         # О нас
+├── services.php      # Услуги
+├── pricing.php       # Прайс-лист
+├── gallery.php       # Галерея
+├── blog.php          # Блог
+├── contacts.php      # Контакты
+└── setup.php         # Установщик (удалить после установки!)
+```
+
+## API Endpoints
+
+- `api/booking.php` - Обработка заявок на бронирование
+- `api/contact.php` - Обработка контактных форм
+- `api/services.php` - Получение списка услуг
+- `api/time-slots.php` - Получение доступных временных слотов
+- `api/reviews.php` - Получение отзывов
+- `api/gallery.php` - Получение изображений галереи
+
+## Формы
+
+### Форма бронирования (Главная страница)
+- Категория услуги (выпадающий список)
+- Услуга (зависит от категории)
+- Дата (только рабочие дни)
+- Время (09:00-21:00, шаг 1 час)
+- Телефон (+421/+380)
+- Сообщение (необязательно)
+- Google reCAPTCHA v3 защита
+- Отправка в Telegram Bot
+
+### Контактная форма
+- Имя (обязательно)
+- Телефон
+- Email
+- Сообщение (обязательно)
+- Google reCAPTCHA v3 защита
+- Отправка в Telegram Bot
+
+## Telegram Bot
+
+Настроен Telegram Bot для получения:
+- Новых заявок на бронирование
+- Сообщений из контактных форм
+
+Токен: `7504481222:AAEhDFMbC5Rj9wHePGR3QdEsKNVPGC3nJHI`
+
+## Мультиязычность
+
+Сайт поддерживает 3 языка:
+- **SK** (Словацкий) - основной язык
+- **RU** (Русский)
+- **UA** (Украинский)
+
+Переключение через GET параметр `lang` или автоматическое определение по браузеру.
+
+## SEO оптимизация
+
+- Мета-теги для всех страниц
+- Структурированные данные (JSON-LD)
+- Оптимизированные URL
+- Индексируемый текстовый контент на странице прайс-листа
+- Локализованные мета-теги для каждого языка
+
+## Безопасность
+
+- Google reCAPTCHA v3 на всех формах
+- SQL инъекции защищены через PDO prepared statements
+- XSS защита через htmlspecialchars()
+- CSRF защита через проверку источника запросов
+
+## Поддержка
+
+Для технической поддержки обращайтесь к разработчику.
+
+## Лицензия
+
+Все права защищены © 2024 Krása štúdio "OK"
