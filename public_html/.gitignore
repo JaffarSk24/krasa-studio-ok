@@ -1,0 +1,39 @@
+# Secrets
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs / runtime
+logs/
+*.log
+tmp/
+cache/
+
+# Dependency dirs
+node_modules/
+vendor/
+
+# Uploads / user content (если есть)
+uploads/
+public/uploads/
+storage/
+
+# Composer / build
+composer.lock
+dist/
+build/
+
+# SSH / sensitive
+*.pem
+*.key
+.htpasswd
