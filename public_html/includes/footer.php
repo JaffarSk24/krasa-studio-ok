@@ -1,5 +1,4 @@
-
-    </main>
+</main>
     
     <!-- Footer -->
     <footer class="bg-gray-50 border-t border-gray-200">
@@ -87,6 +86,8 @@
     
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
     <!-- Scripts -->
     <script src="assets/js/main.js"></script>
@@ -105,7 +106,6 @@
             if (bookingSection) {
                 bookingSection.scrollIntoView({ behavior: 'smooth' });
             } else {
-                // If not on home page, redirect to home page with booking anchor
                 window.location.href = 'index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>#booking';
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 require_once '../includes/config.php';
 require_once '../includes/database.php';
 require_once '../includes/functions.php';
@@ -14,10 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$debugSteps = [];
-
 try {
-    $debugSteps[] = "STEP 1: booking.php started";
 
     // Проверка обязательных полей
     $requiredFields = ['date', 'time', 'phone', 'name', 'service_id'];
@@ -26,13 +24,11 @@ try {
             throw new Exception("Field {$field} is required OR not passed");
         }
     }
-    $debugSteps[] = "STEP 2: Required fields OK";
 
     // Проверка reCAPTCHA
     if (!isset($_POST['recaptcha_token']) || !verifyRecaptcha($_POST['recaptcha_token'])) {
         throw new Exception('reCAPTCHA verification failed');
     }
-    $debugSteps[] = "STEP 3: reCAPTCHA passed";
 
     $date       = $_POST['date'];
     $time       = $_POST['time'];
@@ -42,7 +38,6 @@ try {
     $message    = $_POST['message'] ?? null;
 
     $slotKey = "$date $time";
-    $debugSteps[] = "STEP 4: slotKey=$slotKey | service_id=$serviceId";
 
     // Проверка блокировки
     $blockedFile = __DIR__ . '/../data/blocked_slots.txt';
@@ -50,7 +45,6 @@ try {
     if (in_array($slotKey, $blocked)) {
         throw new Exception("Slot already blocked: $slotKey");
     }
-    $debugSteps[] = "STEP 5: Slot is free";
 
     // Запись в БД
     $db = new Database();
@@ -61,8 +55,10 @@ try {
         INSERT INTO bookings (id, booking_date, booking_time, service_id, client_name, client_phone, message, status, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', NOW())
     ");
-    $stmt->execute([$bookingId, $date, $time, $serviceId, $name, $phone, $message]);
-    $debugSteps[] = "STEP 6: Booking inserted with ID=$bookingId";
+    $dateObj = DateTime::createFromFormat('d-m-Y', $date);
+    $dateIso = $dateObj ? $dateObj->format('Y-m-d') : $date;
+
+    $stmt->execute([$bookingId, $dateIso, $time, $serviceId, $name, $phone, $message]);
 
     // Получаем данные услуги и категории
     $stmt = $conn->prepare("
@@ -83,13 +79,14 @@ try {
     $serviceName  = getLocalizedField($service, 'name');
     $categoryName = getLocalizedField($service, 'category');
 
-    $debugSteps[] = "STEP 7: Loaded service=$serviceName | category=$categoryName";
-
     // Формируем сообщение в Telegram
+    $dateObj = DateTime::createFromFormat('d-m-Y', $date);
+    $dateForTelegram = $dateObj ? $dateObj->format('d-m-Y') : $date;
+
     $telegramMessage  = "🔔 " . t('new_booking') . "\n\n";
     $telegramMessage .= "📂 " . t('category') . ": $categoryName\n";
     $telegramMessage .= "📋 " . t('service') . ": $serviceName\n\n";
-    $telegramMessage .= "📅 " . t('date') . ": $date\n";
+    $telegramMessage .= "📅 " . t('date') . ": $dateForTelegram\n";
     $telegramMessage .= "⏰ " . t('time') . ": $time\n\n";
     $telegramMessage .= "👤 " . t('name') . ": $name\n";
     $telegramMessage .= "📞 " . t('phone_number') . ": $phone\n";
@@ -100,7 +97,7 @@ try {
     try {
         $keyboard = [
             'inline_keyboard' => [[
-                ['text' => t('approve_tg_button'), 'callback_data' => "approve|$date|$time"]
+                ['text' => t('approve_tg_button'), 'callback_data' => "approve|$bookingId"]
             ]]
         ];
         $params = [
@@ -109,26 +106,30 @@ try {
             'parse_mode' => 'HTML',
             'reply_markup' => json_encode($keyboard)
         ];
+
+        require_once __DIR__ . '/../includes/telegram_helper.php';
         sendToTelegram($params);
-        $debugSteps[] = "STEP 8: Sent to Telegram";
     } catch (Exception $te) {
-        $debugSteps[] = "STEP 8: Telegram failed - " . $te->getMessage();
+        // Можно логировать ошибку отправки в Telegram, если нужно
     }
 
     echo json_encode([
         'success' => true,
         'message' => t('booking_success'),
-        'booking_id' => $bookingId,
-        'debug' => $debugSteps
+        'booking_id' => $bookingId
     ]);
 
 } catch (Exception $e) {
+    $logFile = __DIR__ . '/../logs/booking_errors.log';
+    $entry = date('Y-m-d H:i:s') . " | Exception: " . $e->getMessage() . "\n";
+    $entry .= "Trace: " . $e->getTraceAsString() . "\n";
+    $entry .= "POST: " . json_encode($_POST, JSON_UNESCAPED_UNICODE) . "\n\n";
+    @file_put_contents($logFile, $entry, FILE_APPEND);
+
     http_response_code(400);
-    $debugSteps[] = "ERROR: " . $e->getMessage();
     echo json_encode([
         'success' => false,
-        'message' => $e->getMessage(),
-        'debug' => $debugSteps
+        'message' => $e->getMessage()
     ]);
 }
 

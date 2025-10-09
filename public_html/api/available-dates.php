@@ -24,25 +24,27 @@ $end = (clone $today)->modify('+30 days');
 
 // Перебираем все даты от сегодня до +30 дней
 for ($date = clone $today; $date <= $end; $date->modify('+1 day')) {
-    $dateStr = $date->format('Y-m-d');
+    $dateIso = $date->format('Y-m-d');   // ISO для сравнения с blocked
+    $dateStr = $date->format('d-m-Y');   // Европейский для отдачи на фронт
 
     // Генерируем все возможные слоты на день
     $slots = [];
     for ($h = 9; $h <= 20; $h++) {
         $slots[] = sprintf('%02d:00', $h);
+        $slots[] = sprintf('%02d:30', $h);
     }
 
     // Проверяем, есть ли хотя бы один слот, который не заблокирован
     $hasFree = false;
     foreach ($slots as $time) {
-        $full = "$dateStr $time";
+        $full = "$dateIso $time";  // сравниваем с ISO датой
         if (!in_array($full, $blocked)) {
             $hasFree = true;
             break;
         }
     }
 
-    // Если есть свободные слоты → добавляем день в массив доступных
+    // Если есть свободные слоты → добавляем день в массив доступных (в европейском формате)
     if ($hasFree) {
         $available[] = $dateStr;
     }

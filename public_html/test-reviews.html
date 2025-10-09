@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Reviews Carousel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <style>
+    body { margin: 0; padding: 40px; background: #f9fafb; font-family: system-ui, sans-serif; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    
+    .reviews-swiper { padding: 0 50px; }
+    
+    .review-card {
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      height: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .swiper-button-prev, .swiper-button-next {
+      width: 44px;
+      height: 44px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .swiper-button-prev:after, .swiper-button-next:after {
+      font-size: 20px;
+      color: #8b9b4a;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Test Carousel</h2>
+    
+    <div class="swiper reviews-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><div class="review-card">Review 1</div></div>
+        <div class="swiper-slide"><div class="review-card">Review 2</div></div>
+        <div class="swiper-slide"><div class="review-card">Review 3</div></div>
+        <div class="swiper-slide"><div class="review-card">Review 4</div></div>
+        <div class="swiper-slide"><div class="review-card">Review 5</div></div>
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper('.reviews-swiper', {
+      slidesPerView: 3,
+      spaceBetween: 24,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        320: { slidesPerView: 1, spaceBetween: 12 },
+        640: { slidesPerView: 2, spaceBetween: 16 },
+        1024: { slidesPerView: 3, spaceBetween: 24 }
+      }
+    });
+  </script>
+</body>
+</html>

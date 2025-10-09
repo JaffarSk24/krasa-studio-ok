@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initLightbox();
     initAccordion();
     initFormHandlers();
-    initCarousel();
     initLazyLoading();
+    loadGoogleReviews();
     
     // Update header on scroll
     updateHeaderOnScroll();
@@ -31,7 +31,6 @@ function initScrollAnimations() {
         });
     }, observerOptions);
     
-    // Observe all elements with fade-in class
     document.querySelectorAll('.fade-in').forEach(el => {
         observer.observe(el);
     });
@@ -43,7 +42,6 @@ function initLightbox() {
     let lightbox = document.querySelector('.lightbox');
     
     if (!lightbox) {
-        // Create lightbox if it doesn't exist
         lightbox = document.createElement('div');
         lightbox.className = 'lightbox';
         lightbox.innerHTML = `
@@ -65,7 +63,6 @@ function initLightbox() {
         });
     });
     
-    // Close lightbox
     function closeLightbox() {
         lightbox.style.display = 'none';
         document.body.style.overflow = 'auto';
@@ -78,7 +75,6 @@ function initLightbox() {
         }
     });
     
-    // Close with Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeLightbox();
@@ -95,15 +91,12 @@ function initAccordion() {
             const content = this.nextElementSibling;
             const icon = this.querySelector('.accordion-icon');
             
-            // Toggle content
             content.classList.toggle('open');
             
-            // Toggle icon rotation
             if (icon) {
                 icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
             }
             
-            // Close other accordion items
             accordionHeaders.forEach(otherHeader => {
                 if (otherHeader !== this) {
                     const otherContent = otherHeader.nextElementSibling;
@@ -120,35 +113,41 @@ function initAccordion() {
 
 // Form handlers
 function initFormHandlers() {
-    // Booking form
     const bookingForm = document.getElementById('booking-form');
     if (bookingForm) {
         bookingForm.addEventListener('submit', handleBookingForm);
     }
     
-    // Contact form
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', handleContactForm);
     }
 
-    // Initialize Flatpickr for booking date
     const dateInput = document.getElementById('booking-date');
     if (dateInput) {
         fetch('/api/available-dates.php')
             .then(res => res.json())
             .then(dates => {
-                console.log('Available dates:', dates); // ✅ логируем даты, полученные от сервера
-
                 flatpickr(dateInput, {
                     minDate: 'today',
                     maxDate: new Date().fp_incr(30),
-                    dateFormat: 'Y-m-d',
-                    enable: dates,
+                    dateFormat: 'd-m-Y',
                     locale: { firstDayOfWeek: 1 },
                     allowInput: true,
-                    clickOpens: true, // важно для Safari с readonly полями
-                    onChange: function(selectedDates, dateStr, instance) {
+                    clickOpens: true,
+                    disable: [
+                        function(date) {
+                            if (date.getDay() === 0 || date.getDay() === 6) return true;
+
+                            const d = date.getDate().toString().padStart(2, '0');
+                            const m = (date.getMonth() + 1).toString().padStart(2, '0');
+                            const y = date.getFullYear();
+                            const dateStr = `${d}-${m}-${y}`;
+
+                            return !dates.includes(dateStr);
+                        }
+                    ],
+                    onChange: function(selectedDates, dateStr) {
                         if (dateStr) {
                             loadTimeSlots(dateStr);
                         }
@@ -167,12 +166,10 @@ async function handleBookingForm(e) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     
-    // Show loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<div class="spinner mr-2"></div> Odosielam...';
     
     try {
-        // Get reCAPTCHA token
         const token = await grecaptcha.execute(recaptchaSiteKey, {action: 'booking'});
         
         const formData = new FormData(form);
@@ -188,8 +185,6 @@ async function handleBookingForm(e) {
         if (result.success) {
             showNotification(result.message || 'Rezervácia bola úspešne odoslaná!', 'success');
             form.reset();
-            
-            // Show success state for booking form
             showBookingSuccess();
         } else {
             showNotification(result.message || 'Nastala chyba pri odoslaní rezervácie.', 'error');
@@ -211,12 +206,10 @@ async function handleContactForm(e) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     
-    // Show loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<div class="spinner mr-2"></div> Odosielam...';
     
     try {
-        // Get reCAPTCHA token
         const token = await grecaptcha.execute(recaptchaSiteKey, {action: 'contact'});
         
         const formData = new FormData(form);
@@ -246,113 +239,61 @@ async function handleContactForm(e) {
 
 // Show booking success state
 function showBookingSuccess() {
-    const bookingSection = document.getElementById('booking');
-    if (bookingSection) {
-        const successHtml = `
-            <div class="max-w-md mx-auto text-center bg-white p-8 rounded-2xl shadow-2xl">
-                <div class="mb-4">
-                    <i class="fas fa-check-circle text-green-600 text-6xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Rezervácia odoslaná!</h3>
-                <p class="text-gray-600 mb-6">Ozýmeme sa vám čoskoro pre potvrdenie termínu.</p>
-                <button onclick="resetBookingForm()" class="btn-primary">
-                    Rezervovať ďalší termín
-                </button>
+    let overlay = document.getElementById('booking-success-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'booking-success-overlay';
+        overlay.className = 'booking-success-overlay';
+        overlay.innerHTML = `
+            <button id="booking-success-close" aria-label="Close" class="booking-close-btn">&times;</button>
+            <div class="mb-4">
+                <i class="fas fa-check-circle text-green-600 text-6xl"></i>
             </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">${window.translations?.booking_success_title || 'Rezervácia odoslaná!'}</h3>
+            <p class="text-gray-600 mb-6">${window.translations?.booking_success_message || 'Ozveme sa vám čoskoro pre potvrdenie termínu.'}</p>
+            <button id="booking-success-ok" class="btn-primary">${window.translations?.booking_success_button || 'Rezervovať ďalší termín'}</button>
         `;
-        
-        const bookingContent = bookingSection.querySelector('.booking-content');
-        if (bookingContent) {
-            bookingContent.innerHTML = successHtml;
-        }
+        document.body.appendChild(overlay);
+
+        document.body.style.overflow = 'hidden';
+
+        document.getElementById('booking-success-close').addEventListener('click', () => {
+            document.body.style.overflow = '';
+            overlay.remove();
+        });
+
+        document.getElementById('booking-success-ok').addEventListener('click', () => {
+            document.body.style.overflow = '';
+            overlay.remove();
+            location.reload();
+        });
     }
 }
 
-// Reset booking form
 function resetBookingForm() {
-    location.reload(); // Simple way to reset the form
+    document.body.style.overflow = '';
+    location.reload();
 }
 
 // Show notification
 function showNotification(message, type = 'success') {
-    // Remove existing notification
     const existing = document.querySelector('.notification');
     if (existing) {
         existing.remove();
     }
     
-    // Create notification
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
     
     document.body.appendChild(notification);
     
-    // Show notification
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
+    setTimeout(() => notification.classList.add('show'), 100);
     
-    // Hide notification after 5 seconds
     setTimeout(() => {
         notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
+        setTimeout(() => notification.remove(), 300);
     }, 5000);
-}
-
-// Carousel functionality for reviews
-function initCarousel() {
-    const carousel = document.querySelector('.reviews-carousel');
-    if (!carousel) return;
-    
-    const items = carousel.querySelectorAll('.review-card');
-    if (items.length <= 1) return;
-    
-    let currentIndex = 0;
-    const totalItems = items.length;
-    
-    // Create navigation buttons
-    const prevBtn = document.createElement('button');
-    prevBtn.className = 'carousel-btn carousel-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full p-3 z-10';
-    prevBtn.innerHTML = '<i class="fas fa-chevron-left text-gray-600"></i>';
-    
-    const nextBtn = document.createElement('button');
-    nextBtn.className = 'carousel-btn carousel-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full p-3 z-10';
-    nextBtn.innerHTML = '<i class="fas fa-chevron-right text-gray-600"></i>';
-    
-    const carouselContainer = carousel.parentElement;
-    carouselContainer.style.position = 'relative';
-    carouselContainer.appendChild(prevBtn);
-    carouselContainer.appendChild(nextBtn);
-    
-    // Navigation functions
-    function showSlide(index) {
-        items.forEach((item, i) => {
-            item.style.display = i === index ? 'block' : 'none';
-        });
-    }
-    
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % totalItems;
-        showSlide(currentIndex);
-    }
-    
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-        showSlide(currentIndex);
-    }
-    
-    // Event listeners
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
-    
-    // Initialize
-    showSlide(currentIndex);
-    
-    // Auto-advance carousel
-    setInterval(nextSlide, 5000);
 }
 
 // Lazy loading for images
@@ -371,11 +312,8 @@ function initLazyLoading() {
             });
         });
         
-        lazyImages.forEach(img => {
-            imageObserver.observe(img);
-        });
+        lazyImages.forEach(img => imageObserver.observe(img));
     } else {
-        // Fallback for browsers without IntersectionObserver
         lazyImages.forEach(img => {
             img.src = img.dataset.src;
         });
@@ -384,36 +322,17 @@ function initLazyLoading() {
 
 // Update header appearance on scroll
 function updateHeaderOnScroll() {
-    let lastScrollTop = 0;
     const header = document.getElementById('header');
     
     window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Add/remove background
-        if (scrollTop > 50) {
+        if (window.scrollY > 50) {
             header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-md');
             header.classList.remove('bg-transparent');
         } else {
             header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-md');
             header.classList.add('bg-transparent');
         }
-        
-        lastScrollTop = scrollTop;
     }, { passive: true });
-}
-
-// Utility functions
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
 }
 
 // Smooth scroll to element
@@ -435,31 +354,40 @@ async function loadServices() {
         
         const categorySelect = document.getElementById('service-category');
         const serviceSelect = document.getElementById('service-id');
+        const currentLang = window.lang || 'sk';
         
         if (!categorySelect || !serviceSelect) return;
         
-        // Populate categories
-        const categories = [...new Map(services.map(s => [s.category_id, s])).values()];
+        const categoriesMap = new Map();
+        services.forEach(s => {
+            if (!categoriesMap.has(s.category_id)) {
+                categoriesMap.set(s.category_id, {
+                    id: s.category_id,
+                    name: s[`category_name_${currentLang}`] || s.category_name_sk || 'Kategória'
+                });
+            }
+        });
         
-        categorySelect.innerHTML = '<option value="">Vyberte kategóriu</option>';
-        categories.forEach(service => {
+        categorySelect.innerHTML = `<option value="">${window.translations?.select_category || 'Vyberte kategóriu'}</option>`;
+        serviceSelect.innerHTML = `<option value="">${window.translations?.select_service || 'Vyberte službu'}</option>`;
+        
+        categoriesMap.forEach(cat => {
             const option = document.createElement('option');
-            option.value = service.category_id;
-            option.textContent = service.category_name;
+            option.value = cat.id;
+            option.textContent = cat.name;
             categorySelect.appendChild(option);
         });
         
-        // Handle category change
         categorySelect.addEventListener('change', function() {
             const categoryId = this.value;
-            serviceSelect.innerHTML = '<option value="">Vyberte službu</option>';
+            serviceSelect.innerHTML = `<option value="">${window.translations?.select_service || 'Vyberte službu'}</option>`;
             
             if (categoryId) {
-                const categoryServices = services.filter(s => s.category_id === categoryId);
-                categoryServices.forEach(service => {
+                const filteredServices = services.filter(s => s.category_id === categoryId);
+                filteredServices.forEach(service => {
                     const option = document.createElement('option');
                     option.value = service.id;
-                    option.textContent = `${service.name} - ${service.price}€`;
+                    option.textContent = `${service[`name_${currentLang}`] || service.name_sk || 'Služba'} - ${service.price}€`;
                     serviceSelect.appendChild(option);
                 });
             }
@@ -503,10 +431,181 @@ function loadTimeSlots(date) {
     });
 }
 
+// ========== Google Reviews (Place Details + Swiper) ==========
+
+// Настройки
+const GOOGLE_PLACE_ID = 'ChIJURI_hqWPbEcRdG8m3Yd9dZs';
+const REVIEWS_LIMIT   = 12;               
+const MIN_RATING      = 4;                
+const CACHE_KEY       = 'gr_cache_v1';
+const CACHE_TTL_MS    = 7 * 24 * 60 * 60 * 1000; // 7 дней
+
+function fetchWithTimeout(url, options = {}, timeoutMs = 6000) {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs))
+  ]);
+}
+
+// Безопасная инициализация Swiper
+function initReviewsSwiper(slidesAdded) {
+  const options = {
+    slidesPerView: 3,
+    spaceBetween: 24,
+    watchOverflow: false,
+    autoHeight: false,
+    loop: slidesAdded > 3,
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    keyboard: { enabled: true },
+    breakpoints: {
+      320:  { slidesPerView: 1, spaceBetween: 12 },
+      640:  { slidesPerView: 2, spaceBetween: 16 },
+      1024: { slidesPerView: 3, spaceBetween: 24 }
+    }
+  };
+  const arrows = document.querySelectorAll('.swiper-button-prev, .swiper-button-next');
+  arrows.forEach(a => a.style.display = 'inline-flex');
+
+  if (window.Swiper) {
+    const sw = new Swiper('.reviews-swiper', options);
+    requestAnimationFrame(() => sw.update());
+  } else {
+    arrows.forEach(a => a.style.display = 'none');
+    const w = document.getElementById('google-reviews-wrapper');
+    if (w) {
+      w.style.display = 'grid';
+      w.style.gridTemplateColumns = '1fr';
+      w.style.gap = '16px';
+    }
+    console.warn('Swiper JS не найден — показываю список без слайдера.');
+  }
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderStars(rating) {
+  const full = Math.round(Number(rating) || 0);
+  return Array.from({length:5}, (_,i) =>
+    `<i class="fas fa-star ${i < full ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+  ).join('');
+}
+
+function setSummary(place) {
+  const wrap = document.getElementById('google-reviews-summary');
+  if (!wrap || !place) return;
+
+  const nameEl   = document.getElementById('google-reviews-place-name');
+  const ratingEl = document.getElementById('google-reviews-rating-number');
+  const starsEl  = document.getElementById('google-reviews-stars');
+  const totalEl  = document.getElementById('google-reviews-total');
+  const urlA     = document.getElementById('google-reviews-place-url');
+  const iconImg  = document.getElementById('place-icon');
+  const iconWrap = document.getElementById('place-icon-wrap');
+
+  if (nameEl) nameEl.textContent = place.name || '';
+  const r = Number(place.rating || 0);
+  if (ratingEl) ratingEl.textContent = r.toFixed(1);
+  if (starsEl) starsEl.innerHTML = renderStars(r);
+  if (totalEl) totalEl.textContent = `${place.user_ratings_total || place.total || 0} ${window.lang==='ru'?'отзывов':window.lang==='ua'?'відгуків':'recenzií'}`;
+  if (urlA && place.url) urlA.href = place.url;
+
+  // icon_mask_base_uri + background_color
+  // Если у Google вернётся icon_mask_base_uri, используем его, иначе icon или дефолт
+  const mask = place.icon_mask_base_uri;
+  const bg   = place.icon_background_color || place.icon_background_color || '#e5e7eb';
+  const icon = place.icon || 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png';
+
+  if (iconWrap) iconWrap.style.background = bg || '#e5e7eb';
+  if (iconImg) {
+    iconImg.src = mask ? `${mask}.png` : icon;
+    iconImg.alt = place.name || 'Place';
+    iconImg.classList.add('object-contain');
+  }
+
+  wrap.classList.remove('hidden');
+}
+
+// Загрузка Google Reviews (простая сетка без Swiper)
+async function loadGoogleReviews() {
+  const container = document.getElementById('google-reviews');
+  if (!container) return;
+
+  // Кэш
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (raw) {
+      const { ts, data } = JSON.parse(raw);
+      if (Date.now() - ts < CACHE_TTL_MS && data?.result) {
+        setSummary(data.result);
+        renderReviews(data.result.reviews || []);
+        return;
+      }
+    }
+  } catch {}
+
+  const url = `/api/google-places-proxy.php?place_id=${encodeURIComponent(GOOGLE_PLACE_ID)}&language=${encodeURIComponent(window.lang||'sk')}`;
+
+  try {
+    const res = await fetchWithTimeout(url, { cache: 'no-store' }, 6000);
+    const json = await res.json();
+    if (json?.result) {
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: json })); } catch {}
+      setSummary(json.result);
+      renderReviews(json.result.reviews || []);
+    } else {
+      throw new Error('Empty result');
+    }
+  } catch (e) {
+    console.warn('Failed to load Google Reviews:', e);
+    const placeholder = document.getElementById('google-reviews-placeholder');
+    if (placeholder) {
+      placeholder.textContent = window.translations?.no_reviews || 'Reviews will appear soon.';
+    }
+  }
+}
+
+function renderReviews(reviews) {
+  const container = document.getElementById('google-reviews');
+  const placeholder = document.getElementById('google-reviews-placeholder');
+  if (!container) return;
+  
+  // Очищаем контейнер от старых карточек
+  container.innerHTML = '';
+  
+  const filtered = (reviews || []).filter(r => Number(r.rating) >= MIN_RATING).slice(0, 5);
+
+  filtered.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'bg-white rounded-3xl shadow-lg p-6';
+    card.innerHTML = `
+      <div class="flex items-center gap-3 mb-4">
+        <img src="${esc(r.profile_photo_url||'')}" class="w-12 h-12 rounded-full object-cover" onerror="this.style.display='none'">
+        <div>
+          <div class="font-semibold text-gray-900">${esc(r.author_name||'')}</div>
+          <div class="text-xs text-gray-500">${esc(r.relative_time_description||'')}</div>
+        </div>
+      </div>
+      <div class="text-yellow-400 text-sm mb-3">${renderStars(r.rating)}</div>
+      <p class="text-sm text-gray-700 leading-relaxed">${esc((r.text||'').substring(0, 180))}${r.text?.length > 180 ? '...' : ''}</p>
+    `;
+    container.appendChild(card);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', loadGoogleReviews);
+
+// Helpers
+function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, function(m) {
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m];
+    });
+}
+
 // Global variables for reCAPTCHA
 let recaptchaSiteKey = window.recaptchaSiteKey || '';
 
-// Export functions for global access
 window.smoothScrollTo = smoothScrollTo;
 window.loadServices = loadServices;
 window.loadTimeSlots = loadTimeSlots;

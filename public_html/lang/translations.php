@@ -37,6 +37,11 @@ $translations = [
         'name' => 'Meno',
         'email' => 'Email',
         'optional' => 'voliteľné',
+
+        // Плашка подтверждения отправки формы
+        'booking_success_title' => 'Rezervácia odoslaná!',
+        'booking_success_message' => 'Ozýmeme sa vám čoskoro pre potvrdenie termínu.',
+        'booking_success_button' => 'Rezervovať ďalší termín',
         
         // Бронирование
         'booking_success' => 'Rezervácia bola úspešne odoslaná!',
@@ -57,6 +62,10 @@ $translations = [
         'date' => 'Dátum',
         'time' => 'Čas',
         'approve_tg_button' => 'Schváliť',
+
+        // Отзывы
+        'reviews_description' => 'Prečítajte si recenzie a podeľte sa o svoj dojem',
+        'leave_review_button' => 'Napísať recenziu',
         
         // Футер
         'opening_hours' => 'Otváracie hodiny',
@@ -137,6 +146,11 @@ $translations = [
         'email' => 'Email',
         'optional' => 'необязательно',
         
+        // Плашка подтверждения отправки формы
+        'booking_success_title' => 'Заявка успешно отправлена!',
+        'booking_success_message' => 'Мы свяжемся с вами в ближайшее время для подтверждения.',
+        'booking_success_button' => 'Забронировать еще',
+
         // Бронирование
         'booking_success' => 'Заявка успешно отправлена!',
         'booking_error' => 'Произошла ошибка при отправке заявки.',
@@ -156,6 +170,10 @@ $translations = [
         'date' => 'Дата',
         'time' => 'Время',
         'approve_tg_button' => 'Подтвердить',
+
+        // Отзывы
+        'reviews_description' => 'Ознакомьтесь с отзывами и поделитесь своим впечатлением',
+        'leave_review_button' => 'Оставить отзыв',
 
         // Футер
         'opening_hours' => 'Часы работы',
@@ -235,6 +253,11 @@ $translations = [
         'name' => 'Ім’я',
         'email' => 'Email',
         'optional' => 'необов\'язково',
+
+        // Плашка подтверждения отправки формы
+        'booking_success_title' => 'Заявку успішно відправлено!',
+        'booking_success_message' => 'Ми зв\'яжемося з вами найближчим часом для підтвердження.',
+        'booking_success_button' => 'Забронювати ще',
         
         // Бронирование
         'booking_success' => 'Заявку успішно відправлено!',
@@ -255,6 +278,10 @@ $translations = [
         'date' => 'Дата',
         'time' => 'Час',
         'approve_tg_button' => 'Підтвердити',
+
+        // Отзывы
+        'reviews_description' => 'Ознайомтеся з відгуками та поділіться своїм враженням',
+        'leave_review_button' => 'Залишити відгук',
 
         // Футер
         'opening_hours' => 'Години роботи',

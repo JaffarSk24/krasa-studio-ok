@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="<?php echo CURRENT_LANG; ?>" class="scroll-smooth">
 <head>
@@ -55,7 +54,7 @@
                             300: '#c5cd93',
                             400: '#afb873',
                             500: '#99a555',
-                            600: '#7d8643', // Primary olive color from design
+                            600: '#7d8643',
                             700: '#626a35',
                             800: '#50552c',
                             900: '#444a27',
@@ -68,7 +67,10 @@
             }
         }
     </script>
-    
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
 
@@ -77,6 +79,7 @@
     
     <!-- Google reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js?render=<?php echo RECAPTCHA_SITE_KEY; ?>"></script>
+    <script> window.recaptchaSiteKey = '<?php echo RECAPTCHA_SITE_KEY; ?>';</script>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -91,11 +94,26 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/Mini Логотип без фона.png">
     
     <?php include_once 'header-extra.php'; ?>
+
+    <script>
+        window.lang = '<?php echo CURRENT_LANG; ?>';
+        window.translations = {
+            select_category: '<?php echo addslashes(t('select_category')); ?>',
+            select_service: '<?php echo addslashes(t('select_service')); ?>',
+            select_date: '<?php echo addslashes(t('select_date')); ?>',
+            select_time: '<?php echo addslashes(t('select_time')); ?>',
+            time_not_available: '<?php echo addslashes(t('time_not_available')); ?>',
+            book_now: '<?php echo addslashes(t('book_now')); ?>',
+            booking_success_title: '<?php echo addslashes(t('booking_success_title')); ?>',
+            booking_success_message: '<?php echo addslashes(t('booking_success_message')); ?>',
+            booking_success_button: '<?php echo addslashes(t('booking_success_button')); ?>'
+        };
+    </script>
 </head>
 <body class="antialiased bg-white">
     <!-- Header -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <a href="index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" class="flex items-center space-x-2">
@@ -141,7 +159,7 @@
                 <div class="flex items-center space-x-4">
                     <!-- Language Switcher -->
                     <div class="relative">
-                        <select onchange="changeLanguage(this.value)" class="bg-transparent border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-olive-600">
+                        <select onchange="changeLanguage(this.value)" class="lang-select bg-transparent border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-olive-600">
                             <option value="sk" <?php echo CURRENT_LANG === 'sk' ? 'selected' : ''; ?>>SK</option>
                             <option value="ru" <?php echo CURRENT_LANG === 'ru' ? 'selected' : ''; ?>>RU</option>
                             <option value="ua" <?php echo CURRENT_LANG === 'ua' ? 'selected' : ''; ?>>UA</option>
@@ -177,14 +195,14 @@
                     <a href="gallery.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" class="text-gray-700 hover:text-olive-600 transition-colors duration-200 font-medium px-4">
                         <?php echo t('gallery'); ?>
                     </a>
-                    <a href="blog.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" class="text-gray-700 hover:text-olive-600 transition-colors duration-200 font-medium px-4">
+                    <a href="blog.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" class="text-gray-700 hover:text-olive-600 transition-colors.duration-200 font-medium px-4">
                         <?php echo t('blog'); ?>
                     </a>
                     <a href="contacts.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" class="text-gray-700 hover:text-olive-600 transition-colors duration-200 font-medium px-4">
                         <?php echo t('contacts'); ?>
                     </a>
                     <div class="px-4 pt-2">
-                        <button onclick="scrollToBooking()" class="w-full bg-olive-600 hover:bg-olive-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                        <button onclick="scrollToBooking()" class="w-full bg-olive-600 hover:bg-olive-700 text-white px-4 py-2 rounded-md transition-colors.duration-200">
                             <?php echo t('book_now'); ?>
                         </button>
                     </div>

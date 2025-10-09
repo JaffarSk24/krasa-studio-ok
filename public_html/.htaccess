@@ -78,3 +78,27 @@ Options -Indexes
 # Error pages
 ErrorDocument 404 /error-404.php
 ErrorDocument 500 /error-500.php
+
+# Block sensitive files (2.4 и совместимость с 2.2)
+<IfModule mod_authz_core.c>
+  <FilesMatch "^\.(env|git|htaccess|htpasswd)$">
+    Require all denied
+  </FilesMatch>
+  <FilesMatch "(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|Dockerfile|docker-compose\.ya?ml|Makefile|.*\.(sql|ini|bak|swp|pem|key))$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "^\.(env|git|htaccess|htpasswd)$">
+    Order Allow,Deny
+    Deny from all
+  </FilesMatch>
+  <FilesMatch "(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|Dockerfile|docker-compose\.ya?ml|Makefile|.*\.(sql|ini|bak|swp|pem|key))$">
+    Order Allow,Deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# Block sensitive dirs + запрет прямого доступа к includes/
+RedirectMatch 404 ^/(?:\.git|\.svn|\.hg|\.idea|vendor|node_modules)(?:/|$)
+RewriteRule ^includes/ - [R=404,L]
