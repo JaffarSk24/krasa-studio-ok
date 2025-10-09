@@ -192,4 +192,59 @@ function getPageMeta($page, $data = []) {
 
     return $meta;
 }
+
+function normalizePhoneNumber(string $input): string
+{
+    $raw = trim($input);
+
+    if ($raw === '') {
+        throw new InvalidArgumentException('PHONE_EMPTY');
+    }
+
+    $normalized = preg_replace('/[^\d\+]/u', '', $raw);
+
+    if ($normalized === '') {
+        throw new InvalidArgumentException('PHONE_INVALID');
+    }
+
+    if (strpos($normalized, '00') === 0) {
+        $normalized = '+' . substr($normalized, 2);
+    }
+
+    if ($normalized[0] !== '+') {
+        $digitsOnly = preg_replace('/\D/', '', $normalized);
+
+        if (strpos($digitsOnly, '421') === 0 && strlen($digitsOnly) === 12) {
+            $normalized = '+' . $digitsOnly;
+        } elseif (strpos($digitsOnly, '380') === 0 && strlen($digitsOnly) === 12) {
+            $normalized = '+' . $digitsOnly;
+        } elseif ($digitsOnly[0] === '0' && strlen($digitsOnly) === 10) {
+            $normalized = '+421' . substr($digitsOnly, 1);
+        } elseif (strlen($digitsOnly) === 9) {
+            $normalized = '+421' . $digitsOnly;
+        } else {
+            throw new InvalidArgumentException('PHONE_UNSUPPORTED');
+        }
+    }
+
+    $digits = preg_replace('/\D/', '', $normalized);
+
+    if (strpos($normalized, '+421') === 0) {
+        if (strlen($digits) !== 12) {
+            throw new InvalidArgumentException('PHONE_SK_LENGTH');
+        }
+
+        return '+421' . substr($digits, 3);
+    }
+
+    if (strpos($normalized, '+380') === 0) {
+        if (strlen($digits) !== 12) {
+            throw new InvalidArgumentException('PHONE_UA_LENGTH');
+        }
+
+        return '+380' . substr($digits, 3);
+    }
+
+    throw new InvalidArgumentException('PHONE_UNSUPPORTED');
+}
 ?>

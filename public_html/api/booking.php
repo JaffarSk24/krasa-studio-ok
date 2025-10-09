@@ -32,7 +32,11 @@ try {
 
     $date       = $_POST['date'];
     $time       = $_POST['time'];
-    $phone      = $_POST['phone'];
+    try {
+        $phone = normalizePhoneNumber($_POST['phone']);
+    } catch (InvalidArgumentException $e) {
+        throw new Exception(t('invalid_phone_number') ?? 'Invalid phone number format');
+    }
     $name       = trim($_POST['name']);
     $serviceId  = $_POST['service_id'];
     $message    = $_POST['message'] ?? null;

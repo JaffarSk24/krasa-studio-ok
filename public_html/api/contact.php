@@ -30,7 +30,13 @@ try {
     }
     
     $name = trim($_POST['name']);
-    $phone = trim($_POST['phone'] ?? '');
+    try {
+        $phone = isset($_POST['phone']) && $_POST['phone'] !== ''
+            ? normalizePhoneNumber($_POST['phone'])
+            : '';
+    } catch (InvalidArgumentException $e) {
+        throw new Exception(t('invalid_phone_number') ?? 'Invalid phone number format');
+    }
     $email = trim($_POST['email'] ?? '');
     $message = trim($_POST['message']);
     

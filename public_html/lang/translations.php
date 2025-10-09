@@ -38,6 +38,12 @@ $translations = [
         'email' => 'Email',
         'optional' => 'voliteľné',
 
+        // Телефоны и WhatsApp
+        'invalid_phone_number' => 'Zadajte prosím platné telefónne číslo.',
+        'whatsapp_greeting' => 'Dobrý deň!',
+        'whatsapp_message_with_service' => 'Rada by som si rezervovala službu: :service.',
+        'whatsapp_fallback_service' => 'vybranú službu',
+
         // Плашка подтверждения отправки формы
         'booking_success_title' => 'Rezervácia odoslaná!',
         'booking_success_message' => 'Ozýmeme sa vám čoskoro pre potvrdenie termínu.',
@@ -145,6 +151,12 @@ $translations = [
         'name' => 'Имя',
         'email' => 'Email',
         'optional' => 'необязательно',
+
+        // Телефоны и WhatsApp
+        'invalid_phone_number' => 'Пожалуйста, укажите корректный номер телефона.',
+        'whatsapp_greeting' => 'Здравствуйте!',
+        'whatsapp_message_with_service' => 'Я хочу записаться на услугу: :service.',
+        'whatsapp_fallback_service' => 'выбранную услугу',
         
         // Плашка подтверждения отправки формы
         'booking_success_title' => 'Заявка успешно отправлена!',
@@ -253,6 +265,12 @@ $translations = [
         'name' => 'Ім’я',
         'email' => 'Email',
         'optional' => 'необов\'язково',
+
+        // Телефоны и WhatsApp
+        'invalid_phone_number' => 'Будь ласка, вкажіть коректний номер телефону.',
+        'whatsapp_greeting' => 'Доброго дня!',
+        'whatsapp_message_with_service' => 'Хочу записатися на послугу: :service.',
+        'whatsapp_fallback_service' => 'обрану послугу',
 
         // Плашка подтверждения отправки формы
         'booking_success_title' => 'Заявку успішно відправлено!',
