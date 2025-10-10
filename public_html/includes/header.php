@@ -29,7 +29,7 @@
         "name": "Krása štúdio OK",
         "description": "<?php echo e($meta['description']); ?>",
         "url": "<?php echo SITE_URL; ?>",
-        "telephone": "+421905123456",
+        "telephone": "<?php echo getWhatsappNumber(); ?>",
         "address": {
             "@type": "PostalAddress",
             "addressLocality": "Bratislava",
@@ -96,18 +96,25 @@
     <?php include_once 'header-extra.php'; ?>
 
     <script>
-        window.lang = '<?php echo CURRENT_LANG; ?>';
-        window.translations = {
-            select_category: '<?php echo addslashes(t('select_category')); ?>',
-            select_service: '<?php echo addslashes(t('select_service')); ?>',
-            select_date: '<?php echo addslashes(t('select_date')); ?>',
-            select_time: '<?php echo addslashes(t('select_time')); ?>',
-            time_not_available: '<?php echo addslashes(t('time_not_available')); ?>',
-            book_now: '<?php echo addslashes(t('book_now')); ?>',
-            booking_success_title: '<?php echo addslashes(t('booking_success_title')); ?>',
-            booking_success_message: '<?php echo addslashes(t('booking_success_message')); ?>',
-            booking_success_button: '<?php echo addslashes(t('booking_success_button')); ?>'
-        };
+    window.lang = '<?php echo CURRENT_LANG; ?>';
+    window.translations = {
+        select_category: '<?php echo addslashes(t('select_category')); ?>',
+        select_service: '<?php echo addslashes(t('select_service')); ?>',
+        select_date: '<?php echo addslashes(t('select_date')); ?>',
+        select_time: '<?php echo addslashes(t('select_time')); ?>',
+        time_not_available: '<?php echo addslashes(t('time_not_available')); ?>',
+        book_now: '<?php echo addslashes(t('book_now')); ?>',
+        booking_success_title: '<?php echo addslashes(t('booking_success_title')); ?>',
+        booking_success_message: '<?php echo addslashes(t('booking_success_message')); ?>',
+        booking_success_button: '<?php echo addslashes(t('booking_success_button')); ?>',
+
+        // WhatsApp keys (обязательно для корректной сборки короткого/длинного сообщений)
+        whatsapp_greeting: '<?php echo addslashes(t('whatsapp_greeting')); ?>',
+        whatsapp_message_with_service: '<?php echo addslashes(t('whatsapp_message_with_service')); ?>',
+        whatsapp_fallback_service: '<?php echo addslashes(t('whatsapp_fallback_service')); ?>',
+        whatsapp_message_default: '<?php echo addslashes(t('whatsapp_message_default')); ?>',
+        whatsapp_message_short: '<?php echo addslashes(t('whatsapp_message_short')); ?>'
+    };
     </script>
 </head>
 <body class="antialiased bg-white">

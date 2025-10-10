@@ -247,4 +247,45 @@ function normalizePhoneNumber(string $input): string
 
     throw new InvalidArgumentException('PHONE_UNSUPPORTED');
 }
+
+function buildWhatsappMessage(?string $serviceName = null, ?string $lang = null): string
+{
+    if ($lang === null) {
+        $lang = CURRENT_LANG;
+    }
+
+    $greeting = t('whatsapp_greeting', $lang);
+    $template = t('whatsapp_message_with_service', $lang);
+    $serviceText = $serviceName !== null && $serviceName !== ''
+        ? $serviceName
+        : t('whatsapp_fallback_service', $lang);
+
+    $message = trim($greeting . ' ' . str_replace(':service', $serviceText, $template));
+
+    return urlencode($message);
+}
+
+function buildWhatsappMessageShort(?string $serviceName = null): string
+{
+    $template = t('whatsapp_message_short');
+    
+    if ($serviceName && strpos($template, '%s') !== false) {
+        return urlencode(sprintf($template, $serviceName));
+    }
+
+    if ($serviceName) {
+        $template .= ' ' . $serviceName;
+    }
+
+    return urlencode($template);
+}
+
+function getWhatsappNumber(bool $digitsOnly = false): string
+{
+    $number = '+421915310337';
+
+    return $digitsOnly
+        ? preg_replace('/\D/', '', $number)
+        : $number;
+}
 ?>

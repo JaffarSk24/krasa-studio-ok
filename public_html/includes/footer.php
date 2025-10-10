@@ -18,14 +18,14 @@
                         </p>
                         
                         <!-- WhatsApp Button -->
-                        <?php 
-                        $whatsappNumber = '+421905123456';
-                        $whatsappMessage = urlencode(t('whatsapp_message_default'));
-                        ?>
-                        <a href="https://wa.me/<?php echo str_replace('+', '', $whatsappNumber); ?>?text=<?php echo $whatsappMessage; ?>" 
-                           target="_blank" 
+                        <?php $whatsappNumber = getWhatsappNumber(true); ?>
+                        <a href="#"
+                           target="_blank"
                            rel="noopener noreferrer"
-                           class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors duration-200">
+                           class="inline-flex items-center bg-olive-600 hover:bg-olive-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 js-whatsapp-link js-whatsapp-short"
+                           data-whatsapp-number="<?php echo htmlspecialchars($whatsappNumber); ?>"
+                           data-service-name=""
+                           data-whatsapp-variant="short">
                             <i class="fab fa-whatsapp mr-2 text-lg"></i>
                             WhatsApp
                         </a>
@@ -37,15 +37,21 @@
                         <div class="space-y-3">
                             <div class="flex items-center text-gray-600">
                                 <i class="fas fa-phone text-olive-600 mr-3"></i>
-                                <span>+421 905 123 456</span>
+                                <a href="tel:+421915310337" class="hover:underline">
+                                    +421 915 310 337
+                                </a>
                             </div>
                             <div class="flex items-center text-gray-600">
                                 <i class="fas fa-envelope text-olive-600 mr-3"></i>
-                                <span>info@krasastudio.sk</span>
+                                <a href="mailto:info@krasastudio.sk" class="hover:underline">
+                                    info@krasastudio.sk
+                                </a>
                             </div>
                             <div class="flex items-center text-gray-600">
                                 <i class="fas fa-map-marker-alt text-olive-600 mr-3"></i>
-                                <span>Bratislava, Slovensko</span>
+                                <a href="https://maps.app.goo.gl/eaVEMGG5NqS1wSJf6" target="_blank" rel="noopener" class="hover:underline">
+                                    Tomášikova 11, Bratislava
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -66,15 +72,15 @@
                 <div class="border-t border-gray-200 pt-8 mt-8">
                     <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                         <p class="text-gray-600 text-sm">
-                            &copy; <?php echo date('Y'); ?> Krása štúdio "OK". Všetky práva vyhradené.
+                            &copy; <?php echo date('Y'); ?> Krása štúdio "OK" s.r.o. Všetky práva vyhradené.
                         </p>
                         
                         <!-- Social Links -->
                         <div class="flex space-x-4">
-                            <a href="#" class="text-gray-600 hover:text-olive-600 transition-colors duration-200">
+                            <a href="https://www.facebook.com/Krasa.Studio.OK.Bratislava" class="text-gray-600 hover:text-olive-600 transition-colors duration-200">
                                 <i class="fab fa-facebook text-lg"></i>
                             </a>
-                            <a href="#" class="text-gray-600 hover:text-olive-600 transition-colors duration-200">
+                            <a href="https://www.instagram.com/olena.krasastudio/" class="text-gray-600 hover:text-olive-600 transition-colors duration-200">
                                 <i class="fab fa-instagram text-lg"></i>
                             </a>
                         </div>

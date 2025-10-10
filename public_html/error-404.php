@@ -1,4 +1,3 @@
-
 <?php
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
@@ -19,22 +18,18 @@ include 'includes/header.php';
             <h1 class="text-6xl md:text-8xl font-bold text-gray-900 mb-6">404</h1>
             
             <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Stránka sa nenašla' : 
-                          (CURRENT_LANG === 'ru' ? 'Страница не найдена' : 
-                           'Сторінка не знайдена'); ?>
+                <?php echo e(t('error_404_heading')); ?>
             </h2>
             
             <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                <?php echo CURRENT_LANG === 'sk' ? 'Ospravedlňujeme sa, ale stránka ktorú hľadáte neexistuje alebo bola presunutá.' : 
-                          (CURRENT_LANG === 'ru' ? 'Извините, но страница, которую вы ищете, не существует или была перемещена.' : 
-                           'Вибачте, але сторінка, яку ви шукаєте, не існує або була переміщена.'); ?>
+                <?php echo e(t('error_404_text')); ?>
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" 
                    class="btn-primary inline-flex items-center">
                     <i class="fas fa-home mr-2"></i>
-                    <?php echo CURRENT_LANG === 'sk' ? 'Späť domov' : (CURRENT_LANG === 'ru' ? 'Вернуться домой' : 'Повернутися додому'); ?>
+                    <?php echo e(t('error_404_home_button')); ?>
                 </a>
                 
                 <a href="contacts.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" 

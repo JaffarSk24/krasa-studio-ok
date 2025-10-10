@@ -1,4 +1,3 @@
-
 <?php
 require_once 'includes/config.php';
 require_once 'includes/database.php';
@@ -29,7 +28,7 @@ include 'includes/header.php';
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <!-- Left side - Contact Info -->
             <div class="fade-in">
-                <h2 class="text-3xl font-bold text-gray-900 mb-8">
+                <h2 class="text-3xl.font-bold text-gray-900 mb-8">
                     <?php echo e(t('contact_info')); ?>
                 </h2>
                 
@@ -43,7 +42,7 @@ include 'includes/header.php';
                             <h3 class="font-semibold text-gray-900 mb-1">
                                 <?php echo e(t('phone_number')); ?>
                             </h3>
-                            <p class="text-gray-600">+421 905 123 456</p>
+                            <a href="tel:+421915310337" class="text-gray-600 hover:underline">+421 915 310 337</a>
                         </div>
                     </div>
                     
@@ -52,8 +51,8 @@ include 'includes/header.php';
                             <i class="fas fa-envelope text-olive-600 text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-gray-900 mb-1">Email</h3>
-                            <p class="text-gray-600">info@krasastudio.sk</p>
+                            <h3 class="font-semibold text-gray-900 mb-1"><?php echo e(t('email')); ?></h3>
+                            <a href="mailto:info@krasastudio.sk" class="text-gray-600 hover:underline">info@krasastudio.sk</a>
                         </div>
                     </div>
                     
@@ -65,7 +64,9 @@ include 'includes/header.php';
                             <h3 class="font-semibold text-gray-900 mb-1">
                                 <?php echo e(t('address')); ?>
                             </h3>
-                            <p class="text-gray-600">Bratislava, Slovensko</p>
+                            <a href="https://maps.app.goo.gl/eaVEMGG5NqS1wSJf6" target="_blank" rel="noopener" class="text-gray-600 hover:underline">
+                                Tomášikova 11, Bratislava
+                            </a>
                         </div>
                     </div>
                     
@@ -80,9 +81,7 @@ include 'includes/header.php';
                             <div class="text-gray-600">
                                 <p><?php echo e(t('hours_schedule')); ?></p>
                                 <p class="text-sm text-gray-500 mt-1">
-                                    <?php echo CURRENT_LANG === 'sk' ? 'Sobota a nedeľa: Zatvorené' : 
-                                              (CURRENT_LANG === 'ru' ? 'Суббота и воскресенье: Закрыто' : 
-                                               'Субота та неділя: Зачинено'); ?>
+                                    <?php echo e(t('weekend_closed_note')); ?>
                                 </p>
                             </div>
                         </div>
@@ -92,26 +91,15 @@ include 'includes/header.php';
                 <!-- Social Links & WhatsApp -->
                 <div class="space-y-4">
                     <h3 class="font-semibold text-gray-900"><?php echo e(t('follow_us')); ?></h3>
-                    <div class="flex gap-4">
-                        <?php 
-                        $whatsappNumber = '+421905123456';
-                        $whatsappMessage = urlencode(t('whatsapp_message_default'));
-                        ?>
-                        
-                        <a href="https://wa.me/<?php echo str_replace('+', '', $whatsappNumber); ?>?text=<?php echo $whatsappMessage; ?>" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center">
-                            <i class="fab fa-whatsapp mr-2 text-lg"></i>
-                            WhatsApp
-                        </a>
-                        
-                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center">
+                    <div class="flex gap-4 flex-wrap">
+                        <a href="https://www.facebook.com/Krasa.Studio.OK.Bratislava"
+                           class="bg-olive-100 hover:bg-olive-200 text-olive-600 hover:text-olive-700 px-6 py-3 rounded-lg transition-colors duration-200 flex items-center">
                             <i class="fab fa-facebook mr-2"></i>
                             Facebook
                         </a>
-                        
-                        <a href="#" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center">
+
+                        <a href="https://www.instagram.com/olena.krasastudio/"
+                           class="bg-olive-100 hover:bg-olive-200 text-olive-600 hover:text-olive-700 px-6 py-3 rounded-lg transition-colors duration-200 flex items-center">
                             <i class="fab fa-instagram mr-2"></i>
                             Instagram
                         </a>
@@ -122,7 +110,7 @@ include 'includes/header.php';
             <!-- Right side - Google Map -->
             <div class="fade-in">
                 <h2 class="text-3xl font-bold text-gray-900 mb-8">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Kde nás nájdete' : (CURRENT_LANG === 'ru' ? 'Где нас найти' : 'Де нас знайти'); ?>
+                    <?php echo e(t('map_section_title')); ?>
                 </h2>
                 
                 <div class="bg-gray-200 rounded-2xl overflow-hidden shadow-lg aspect-video">
@@ -138,12 +126,10 @@ include 'includes/header.php';
                 
                 <div class="mt-6 p-6 bg-olive-50 rounded-xl">
                     <h4 class="font-semibold text-gray-900 mb-2">
-                        <?php echo CURRENT_LANG === 'sk' ? 'Ako sa k nám dostať' : (CURRENT_LANG === 'ru' ? 'Как до нас добраться' : 'Як до нас дістатися'); ?>
+                        <?php echo e(t('how_to_get_title')); ?>
                     </h4>
                     <p class="text-gray-600">
-                        <?php echo CURRENT_LANG === 'sk' ? 'Naše štúdio sa nachádza v centre Bratislavy s ľahkým prístupom verejnou dopravou aj autom. Parkovacie miesta sú dostupné v okolí.' : 
-                                  (CURRENT_LANG === 'ru' ? 'Наша студия находится в центре Братиславы с легким доступом общественным транспортом и на автомобиле. Парковочные места доступны в округе.' : 
-                                   'Наша студія розташована в центрі Братислави з легким доступом громадським транспортом та на автомобілі. Паркувальні місця доступні в околицях.'); ?>
+                        <?php echo e(t('how_to_get_desc')); ?>
                     </p>
                 </div>
             </div>
@@ -156,7 +142,7 @@ include 'includes/header.php';
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 fade-in">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Napíšte nám' : (CURRENT_LANG === 'ru' ? 'Напишите нам' : 'Напишіть нам'); ?>
+                <?php echo e(t('contact_form_title')); ?>
             </h2>
             <p class="text-xl text-gray-600 max-w-2xl mx-auto">
                 <?php echo e(t('contact_form_description')); ?>
@@ -185,14 +171,14 @@ include 'includes/header.php';
                             <input type="tel" 
                                    id="phone" 
                                    name="phone" 
-                                   placeholder="+421 905 123 456"
+                                   placeholder="+421 915 310 337"
                                    class="form-control">
                         </div>
                     </div>
                     
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email
+                            <?php echo e(t('email')); ?>
                         </label>
                         <input type="email" 
                                id="email" 
@@ -208,12 +194,12 @@ include 'includes/header.php';
                                   name="message" 
                                   rows="6" 
                                   required 
-                                  placeholder="<?php echo CURRENT_LANG === 'sk' ? 'Napíšte nám svoju správu...' : (CURRENT_LANG === 'ru' ? 'Напишите нам ваше сообщение...' : 'Напишіть нам ваше повідомлення...'); ?>"
+                                  placeholder="<?php echo e(t('contact_message_placeholder')); ?>"
                                   class="form-control"></textarea>
                     </div>
                     
                     <div class="text-sm text-gray-500">
-                        * <?php echo CURRENT_LANG === 'sk' ? 'Povinné polia' : (CURRENT_LANG === 'ru' ? 'Обязательные поля' : 'Обов\'язкові поля'); ?>
+                        * <?php echo e(t('required_fields_note')); ?>
                     </div>
                     
                     <button type="submit" class="w-full btn-primary py-4 text-lg">
@@ -231,7 +217,7 @@ include 'includes/header.php';
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 fade-in">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Často kladené otázky' : (CURRENT_LANG === 'ru' ? 'Часто задаваемые вопросы' : 'Часто поставлені питання'); ?>
+                <?php echo e(t('faq_title')); ?>
             </h2>
         </div>
         
@@ -240,18 +226,14 @@ include 'includes/header.php';
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3 class="font-semibold text-gray-900">
-                        <?php echo CURRENT_LANG === 'sk' ? 'Ako si môžem rezervovať termín?' : 
-                                  (CURRENT_LANG === 'ru' ? 'Как я могу забронировать время?' : 
-                                   'Як я можу забронювати час?'); ?>
+                        <?php echo e(t('faq_how_to_book_question')); ?>
                     </h3>
                     <i class="fas fa-chevron-down accordion-icon text-olive-600"></i>
                 </div>
                 <div class="accordion-content">
                     <div class="accordion-body">
                         <p class="text-gray-600">
-                            <?php echo CURRENT_LANG === 'sk' ? 'Termín si môžete rezervovať online cez náš rezervačný formulár na hlavnej stránke, telefonicky na +421 905 123 456, alebo cez WhatsApp.' : 
-                                      (CURRENT_LANG === 'ru' ? 'Время можно забронировать онлайн через нашу форму бронирования на главной странице, по телефону +421 905 123 456, или через WhatsApp.' : 
-                                       'Час можна забронювати онлайн через нашу форму бронювання на головній сторінці, по телефону +421 905 123 456, або через WhatsApp.'); ?>
+                            <?php echo e(t('faq_how_to_book_answer')); ?>
                         </p>
                     </div>
                 </div>
@@ -261,19 +243,14 @@ include 'includes/header.php';
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3 class="font-semibold text-gray-900">
-                        <?php echo CURRENT_LANG === 'sk' ? 'Aké sú vaše otváracie hodiny?' : 
-                                  (CURRENT_LANG === 'ru' ? 'Какие у вас часы работы?' : 
-                                   'Які у вас години роботи?'); ?>
+                        <?php echo e(t('faq_opening_hours_question')); ?>
                     </h3>
                     <i class="fas fa-chevron-down accordion-icon text-olive-600"></i>
                 </div>
                 <div class="accordion-content">
                     <div class="accordion-body">
                         <p class="text-gray-600">
-                            <?php echo e(t('hours_schedule')); ?>. 
-                            <?php echo CURRENT_LANG === 'sk' ? 'Sobota a nedeľa máme zatvorené.' : 
-                                      (CURRENT_LANG === 'ru' ? 'Суббота и воскресенье у нас закрыто.' : 
-                                       'Субота та неділя у нас зачинено.'); ?>
+                            <?php echo e(t('faq_opening_hours_answer')); ?>
                         </p>
                     </div>
                 </div>
@@ -283,18 +260,14 @@ include 'includes/header.php';
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3 class="font-semibold text-gray-900">
-                        <?php echo CURRENT_LANG === 'sk' ? 'Môžem zrušiť alebo presunúť rezerváciu?' : 
-                                  (CURRENT_LANG === 'ru' ? 'Могу ли я отменить или перенести бронирование?' : 
-                                   'Чи можу я скасувати або перенести бронювання?'); ?>
+                        <?php echo e(t('faq_reschedule_question')); ?>
                     </h3>
                     <i class="fas fa-chevron-down accordion-icon text-olive-600"></i>
                 </div>
                 <div class="accordion-content">
                     <div class="accordion-body">
                         <p class="text-gray-600">
-                            <?php echo CURRENT_LANG === 'sk' ? 'Áno, rezerváciu môžete zrušiť alebo presunúť najneskôr 24 hodín pred plánovaným termínom. Kontaktujte nás telefonicky alebo cez WhatsApp.' : 
-                                      (CURRENT_LANG === 'ru' ? 'Да, бронирование можно отменить или перенести не позднее чем за 24 часа до планируемого времени. Свяжитесь с нами по телефону или через WhatsApp.' : 
-                                       'Так, бронювання можна скасувати або перенести не пізніше ніж за 24 години до планованого часу. Зв\'яжіться з нами по телефону або через WhatsApp.'); ?>
+                            <?php echo e(t('faq_reschedule_answer')); ?>
                         </p>
                     </div>
                 </div>
@@ -304,18 +277,14 @@ include 'includes/header.php';
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3 class="font-semibold text-gray-900">
-                        <?php echo CURRENT_LANG === 'sk' ? 'Aké spôsoby platby prijímate?' : 
-                                  (CURRENT_LANG === 'ru' ? 'Какие способы оплаты вы принимаете?' : 
-                                   'Які способи оплати ви приймаєте?'); ?>
+                        <?php echo e(t('faq_payment_methods_question')); ?>
                     </h3>
                     <i class="fas fa-chevron-down accordion-icon text-olive-600"></i>
                 </div>
                 <div class="accordion-content">
                     <div class="accordion-body">
                         <p class="text-gray-600">
-                            <?php echo CURRENT_LANG === 'sk' ? 'Prijímame platby v hotovosti aj kartou. Všetky hlavné platobné karty sú akceptované.' : 
-                                      (CURRENT_LANG === 'ru' ? 'Мы принимаем оплату наличными и картой. Принимаются все основные платежные карты.' : 
-                                       'Ми приймаємо оплату готівкою та карткою. Приймаються всі основні платіжні картки.'); ?>
+                            <?php echo e(t('faq_payment_methods_answer')); ?>
                         </p>
                     </div>
                 </div>

@@ -1,4 +1,3 @@
-
 <?php
 require_once '../includes/config.php';
 require_once '../includes/database.php';
@@ -16,42 +15,44 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
-    // Validate required fields
+    $fieldLabels = [
+        'name' => t('name'),
+        'message' => t('message'),
+    ];
+
     $requiredFields = ['name', 'message'];
     foreach ($requiredFields as $field) {
         if (empty($_POST[$field])) {
-            throw new Exception("Field {$field} is required");
+            $label = $fieldLabels[$field] ?? $field;
+            throw new Exception(sprintf(t('field_required'), $label));
         }
     }
-    
-    // Verify reCAPTCHA
+
     if (!isset($_POST['recaptcha_token']) || !verifyRecaptcha($_POST['recaptcha_token'])) {
-        throw new Exception('reCAPTCHA verification failed');
+        throw new Exception(t('recaptcha_failed'));
     }
-    
+
     $name = trim($_POST['name']);
     try {
         $phone = isset($_POST['phone']) && $_POST['phone'] !== ''
             ? normalizePhoneNumber($_POST['phone'])
             : '';
     } catch (InvalidArgumentException $e) {
-        throw new Exception(t('invalid_phone_number') ?? 'Invalid phone number format');
+        throw new Exception(t('invalid_phone_number'));
     }
     $email = trim($_POST['email'] ?? '');
     $message = trim($_POST['message']);
-    
+
     $db = new Database();
     $conn = $db->getConnection();
-    
-    // Save contact to database
+
     $contactId = generateUUID();
     $stmt = $conn->prepare("
         INSERT INTO contacts (id, name, phone, email, message, status, created_at)
         VALUES (?, ?, ?, ?, ?, 'new', NOW())
     ");
     $stmt->execute([$contactId, $name, $phone ?: null, $email ?: null, $message]);
-    
-    // Send notification to Telegram
+
     $telegramMessage = "📨 Nová správa z kontaktného formulára!\n\n";
     $telegramMessage .= "👤 Meno: {$name}\n";
     if ($phone) {
@@ -62,20 +63,19 @@ try {
     }
     $telegramMessage .= "💬 Správa:\n{$message}\n";
     $telegramMessage .= "\n#kontakt #krásaštúdioOK";
-    
+
     try {
         sendToTelegram($telegramMessage);
     } catch (Exception $e) {
-        // Log telegram error but don't fail the contact form
         error_log("Telegram notification failed: " . $e->getMessage());
     }
-    
+
     echo json_encode([
         'success' => true,
         'message' => t('contact_success'),
         'contact_id' => $contactId
     ]);
-    
+
 } catch (Exception $e) {
     http_response_code(400);
     echo json_encode([

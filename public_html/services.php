@@ -1,4 +1,3 @@
-
 <?php
 require_once 'includes/config.php';
 require_once 'includes/database.php';
@@ -114,17 +113,17 @@ include 'includes/header.php';
                                                         </div>
                                                         
                                                         <div class="flex gap-2">
-                                                            <?php 
-                                                            $whatsappNumber = $service['whatsapp_number'] ?: '+421905123456';
+                                                            <?php
                                                             $serviceName = getLocalizedField($service, 'name');
-                                                            $whatsappMessage = urlencode(
-                                                                (CURRENT_LANG === 'sk' ? "Zdravím! Chcel by som si rezervovať termín na službu: " : 
-                                                                (CURRENT_LANG === 'ru' ? "Здравствуйте! Хотел бы записаться на услугу: " : 
-                                                                "Здравствуйте! Хотів би записатися на послугу: ")) . $serviceName
+                                                            $prefillCategoryName = $categoryName;
+                                                            $whatsappLink = sprintf(
+                                                                'https://wa.me/%s?text=%s',
+                                                                getWhatsappNumber(true),
+                                                                buildWhatsappMessage($serviceName)
                                                             );
                                                             ?>
                                                             
-                                                            <a href="https://wa.me/<?php echo str_replace('+', '', $whatsappNumber); ?>?text=<?php echo $whatsappMessage; ?>" 
+                                                            <a href="<?php echo $whatsappLink; ?>" 
                                                                target="_blank" 
                                                                rel="noopener noreferrer"
                                                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
@@ -132,8 +131,16 @@ include 'includes/header.php';
                                                                 <span class="hidden sm:inline">WhatsApp</span>
                                                             </a>
                                                             
-                                                            <button onclick="window.location.href='index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>#booking'" 
-                                                                    class="btn-primary px-4 py-2 flex items-center">
+                                                            <button
+                                                                type="button"
+                                                                class="btn-primary px-4 py-2 flex items-center prefill-booking-btn"
+                                                                data-category-id="<?php echo $service['category_id']; ?>"
+                                                                data-service-id="<?php echo $service['id']; ?>"
+                                                                data-category-name="<?php echo e($prefillCategoryName); ?>"
+                                                                data-service-name="<?php echo e($serviceName); ?>"
+                                                                data-lang="<?php echo CURRENT_LANG; ?>"
+                                                                data-default-lang="<?php echo DEFAULT_LANGUAGE; ?>"
+                                                                data-target="<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? 'index.php?lang=' . CURRENT_LANG . '#booking' : 'index.php#booking'; ?>">
                                                                 <i class="fas fa-calendar-alt mr-1"></i>
                                                                 <span class="hidden sm:inline"><?php echo e(t('book_service')); ?></span>
                                                             </button>
@@ -153,37 +160,51 @@ include 'includes/header.php';
             <div class="text-center py-20">
                 <i class="fas fa-spa text-6xl text-gray-300 mb-6"></i>
                 <h3 class="text-2xl font-bold text-gray-500 mb-4">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Služby sa načítavajú...' : (CURRENT_LANG === 'ru' ? 'Услуги загружаются...' : 'Послуги завантажуються...'); ?>
+                    <?php echo e(t('loading')); ?>
                 </h3>
             </div>
         <?php endif; ?>
     </div>
 </section>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.prefill-booking-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+            const payload = {
+                categoryId: button.dataset.categoryId,
+                serviceId: button.dataset.serviceId,
+                categoryName: button.dataset.categoryName,
+                serviceName: button.dataset.serviceName,
+                lang: button.dataset.lang
+            };
+            sessionStorage.setItem('bookingPrefill', JSON.stringify(payload));
+            window.location.href = button.dataset.target;
+        });
+    });
+});
+</script>
+
 <!-- CTA Section -->
 <section class="py-20 bg-olive-600 text-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Rezervujte si svoj termín už dnes!' : 
-                          (CURRENT_LANG === 'ru' ? 'Забронируйте время уже сегодня!' : 
-                           'Забронюйте свій час вже сьогодні!'); ?>
+                <?php echo e(t('services_cta_title')); ?>
             </h2>
             <p class="text-xl text-olive-100 mb-8 max-w-3xl mx-auto">
-                <?php echo CURRENT_LANG === 'sk' ? 'Naši profesionáli sa tešia na stretnutie s vami.' : 
-                          (CURRENT_LANG === 'ru' ? 'Наши профессионалы с нетерпением ждут встречи с вами.' : 
-                           'Наші професіонали з нетерпінням чекають зустрічі з вами.'); ?>
+                <?php echo e(t('services_cta_text')); ?>
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <button onclick="window.location.href='index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>#booking'" 
-                        class="bg-white text-olive-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center">
+                        class="bg-white text-olive-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold transition-colors.duration-200 inline-flex.items-center">
                     <i class="fas fa-calendar-alt mr-2"></i>
                     <?php echo e(t('book_now')); ?>
                 </button>
                 
                 <a href="contacts.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" 
-                   class="border-2 border-white text-white hover:bg-white hover:text-olive-600 px-8 py-4 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center">
+                   class="border-2 border-white text-white hover:bg-white.hover:text-olive-600 px-8 py-4 rounded-lg.font-semibold transition-colors duration-200 inline-flex.items-center">
                     <i class="fas fa-phone mr-2"></i>
                     <?php echo e(t('contact_us')); ?>
                 </a>

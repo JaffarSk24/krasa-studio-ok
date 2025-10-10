@@ -79,13 +79,11 @@ include 'includes/header.php';
                     <?php echo e(t('book_now')); ?>
                 </button>
 
-                <?php 
-                $whatsappNumber = '+421951223953';
-                $whatsappMessage = urlencode(t('whatsapp_message_default'));
-                ?>
-                <a href="https://wa.me/<?php echo str_replace('+', '', $whatsappNumber); ?>?text=<?php echo $whatsappMessage; ?>" 
+                <a href="https://wa.me/<?php echo getWhatsappNumber(true); ?>?text=<?php echo buildWhatsappMessage(); ?>"
                    target="_blank" rel="noopener noreferrer"
-                   class="bg-green-600 hover:bg-green-700 border-green-600 text-white px-8 py-4 text-lg rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center">
+                   class="bg-green-600 hover:bg-green-700 border-green-600 text-white px-8 py-4 text-lg rounded-full shadow-2xl transform hover:scale-105 transition-all.duration-300 flex items-center js-whatsapp-link"
+                   data-whatsapp-number="<?php echo getWhatsappNumber(true); ?>"
+                   data-service-name="">
                     <i class="fab fa-whatsapp mr-2"></i>
                     WhatsApp
                 </a>
@@ -304,15 +302,21 @@ include 'includes/header.php';
                 <div class="space-y-4">
                     <div class="flex items-center">
                         <i class="fas fa-phone text-2xl mr-4"></i>
-                        <span class="text-lg">+421 915 310 337</span>
+                        <a href="tel:+421915310337" class="text-lg hover:underline">
+                            +421 915 310 337
+                        </a>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-envelope text-2xl mr-4"></i>
-                        <span class="text-lg">info@krasastudio.sk</span>
+                        <a href="mailto:info@krasastudio.sk" class="text-lg hover:underline">
+                            info@krasastudio.sk
+                        </a>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-map-marker-alt text-2xl mr-4"></i>
-                        <span class="text-lg">Tomášikova 11, Bratislava</span>
+                        <a href="https://maps.app.goo.gl/eaVEMGG5NqS1wSJf6" target="_blank" rel="noopener" class="text-lg hover:underline">
+                            Tomášikova 11, Bratislava
+                        </a>
                     </div>
                 </div>
             </div>
@@ -352,8 +356,12 @@ include 'includes/header.php';
 </section>
 
 <!-- WhatsApp Float Button -->
-<a href="https://wa.me/<?php echo str_replace('+', '', $whatsappNumber); ?>?text=<?php echo $whatsappMessage; ?>" 
-   target="_blank" rel="noopener noreferrer" class="whatsapp-float">
+<a href="#"
+   target="_blank" rel="noopener noreferrer"
+   class="whatsapp-float js-whatsapp-link js-whatsapp-short"
+   data-whatsapp-number="<?php echo getWhatsappNumber(true); ?>"
+   data-whatsapp-variant="short"
+   data-service-name="">
     <i class="fab fa-whatsapp"></i>
 </a>
 

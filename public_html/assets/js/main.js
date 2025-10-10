@@ -14,7 +14,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load services for booking form
     loadServices();
+
+    // Init WhatsApp links with fallback message
+    updateWhatsappLinks();
 });
+
+let servicesCache = [];
+
+function buildWhatsappMessageClient(serviceName = '', variant = 'default') {
+    const translations = window.translations || {};
+    const fallback = translations.whatsapp_fallback_service || 'vybranú službu';
+    const serviceText = serviceName || fallback;
+
+    if (variant === 'short' && translations.whatsapp_message_short) {
+        // Для короткого варианта используем ровно перевод: не добавляем название услуги.
+        return encodeURIComponent(translations.whatsapp_message_short);
+    }
+
+    const greeting = translations.whatsapp_greeting || 'Dobrý deň!';
+    const template = translations.whatsapp_message_with_service || 'Rada by som si rezervovala službu: :service.';
+    const text = `${greeting} ${template.replace(':service', serviceText)}`.trim();
+    return encodeURIComponent(text);
+}
+
+function updateWhatsappLinks(selectedServiceName = '') {
+    // Обновляем ТОЛЬКО кнопки, отмеченные классом js-whatsapp-short
+    document.querySelectorAll('.js-whatsapp-short').forEach(link => {
+        const number = link.dataset.whatsappNumber || '421915310337';
+        const linkServiceName = link.dataset.serviceName || '';
+        const serviceName = selectedServiceName || linkServiceName;
+        const variant = link.dataset.whatsappVariant || 'short'; // короткий по умолчанию для этой группы
+        const encodedMessage = buildWhatsappMessageClient(serviceName, variant);
+        link.href = `https://wa.me/${number}?text=${encodedMessage}`;
+    });
+}
 
 // Scroll animations
 function initScrollAnimations() {
@@ -185,6 +218,7 @@ async function handleBookingForm(e) {
         if (result.success) {
             showNotification(result.message || 'Rezervácia bola úspešne odoslaná!', 'success');
             form.reset();
+            updateWhatsappLinks();
             showBookingSuccess();
         } else {
             showNotification(result.message || 'Nastala chyba pri odoslaní rezervácie.', 'error');
@@ -351,48 +385,152 @@ async function loadServices() {
     try {
         const response = await fetch('api/services.php');
         const services = await response.json();
-        
+
         const categorySelect = document.getElementById('service-category');
         const serviceSelect = document.getElementById('service-id');
         const currentLang = window.lang || 'sk';
-        
+
         if (!categorySelect || !serviceSelect) return;
-        
+
+        const normalize = (value) => (value ?? '').toString().trim().toLowerCase();
+
+        let prefillData = null;
+        let prefillApplied = false;
+        const rawPrefill = sessionStorage.getItem('bookingPrefill');
+
+        if (rawPrefill) {
+            try {
+                prefillData = JSON.parse(rawPrefill);
+            } catch (err) {
+                console.warn('Unable to parse bookingPrefill payload', err);
+            }
+            sessionStorage.removeItem('bookingPrefill');
+        }
+
+        if (prefillData && prefillData.lang && prefillData.lang !== currentLang) {
+            prefillData = null;
+        }
+
         const categoriesMap = new Map();
-        services.forEach(s => {
-            if (!categoriesMap.has(s.category_id)) {
-                categoriesMap.set(s.category_id, {
-                    id: s.category_id,
-                    name: s[`category_name_${currentLang}`] || s.category_name_sk || 'Kategória'
+        services.forEach((service) => {
+            if (!categoriesMap.has(service.category_id)) {
+                categoriesMap.set(service.category_id, {
+                    id: service.category_id,
+                    name: service[`category_name_${currentLang}`] || service.category_name_sk || 'Kategória',
                 });
             }
         });
-        
+
         categorySelect.innerHTML = `<option value="">${window.translations?.select_category || 'Vyberte kategóriu'}</option>`;
         serviceSelect.innerHTML = `<option value="">${window.translations?.select_service || 'Vyberte službu'}</option>`;
-        
-        categoriesMap.forEach(cat => {
+
+        categoriesMap.forEach((category) => {
             const option = document.createElement('option');
-            option.value = cat.id;
-            option.textContent = cat.name;
+            option.value = category.id;
+            option.textContent = category.name;
             categorySelect.appendChild(option);
         });
-        
-        categorySelect.addEventListener('change', function() {
+
+        const tryApplyServicePrefill = (servicesForCategory) => {
+            if (!prefillData || prefillApplied) return;
+
+            const byId = servicesForCategory.find(
+                (srv) => String(srv.id) === String(prefillData.serviceId)
+            );
+
+            const byName = servicesForCategory.find((srv) =>
+                normalize(srv[`name_${currentLang}`] || srv.name_sk) === normalize(prefillData.serviceName)
+            );
+
+            const matchedService = byId || byName;
+
+            if (matchedService) {
+                serviceSelect.value = matchedService.id;
+                serviceSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                prefillApplied = true;
+            }
+        };
+
+        categorySelect.addEventListener('change', function () {
             const categoryId = this.value;
             serviceSelect.innerHTML = `<option value="">${window.translations?.select_service || 'Vyberte službu'}</option>`;
-            
-            if (categoryId) {
-                const filteredServices = services.filter(s => s.category_id === categoryId);
-                filteredServices.forEach(service => {
-                    const option = document.createElement('option');
-                    option.value = service.id;
-                    option.textContent = `${service[`name_${currentLang}`] || service.name_sk || 'Služba'} - ${service.price}€`;
-                    serviceSelect.appendChild(option);
-                });
+
+            if (!categoryId) return;
+
+            const servicesForCategory = services.filter(
+                (srv) => String(srv.category_id) === String(categoryId)
+            );
+
+            servicesForCategory.forEach((srv) => {
+                const option = document.createElement('option');
+                const serviceName = srv[`name_${currentLang}`] || srv.name_sk || 'Služба';
+                option.value = srv.id;
+                option.textContent = `${serviceName} - ${srv.price}€`;
+                serviceSelect.appendChild(option);
+            });
+
+            if (
+                prefillData &&
+                (String(prefillData.categoryId) === String(categoryId) ||
+                    normalize(prefillData.categoryName) === normalize(this.options[this.selectedIndex]?.textContent))
+            ) {
+                tryApplyServicePrefill(servicesForCategory);
             }
         });
-        
+
+        const resolvePrefillCategory = () => {
+            if (!prefillData) return null;
+
+            if (
+                prefillData.categoryId &&
+                categorySelect.querySelector(`option[value="${prefillData.categoryId}"]`)
+            ) {
+                return prefillData.categoryId;
+            }
+
+            if (prefillData.serviceId) {
+                const match = services.find(
+                    (srv) => String(srv.id) === String(prefillData.serviceId)
+                );
+                if (match) {
+                    const option = categorySelect.querySelector(`option[value="${match.category_id}"]`);
+                    if (option) {
+                        prefillData.categoryId = match.category_id;
+                        return match.category_id;
+                    }
+                }
+            }
+
+            if (prefillData.categoryName) {
+                const target = normalize(prefillData.categoryName);
+                const option = Array.from(categorySelect.options).find(
+                    (opt) => normalize(opt.textContent) === target
+                );
+                if (option) {
+                    prefillData.categoryId = option.value;
+                    return option.value;
+                }
+            }
+
+            return null;
+        };
+
+        const targetCategory = resolvePrefillCategory();
+
+        if (targetCategory) {
+            categorySelect.value = targetCategory;
+            categorySelect.dispatchEvent(new Event('change', { bubbles: true }));
+            setTimeout(() => {
+                if (!prefillApplied && prefillData) {
+                    const servicesForCategory = services.filter(
+                        (srv) => String(srv.category_id) === String(categorySelect.value)
+                    );
+                    tryApplyServicePrefill(servicesForCategory);
+                }
+            }, 150);
+        } else {
+            prefillData = null;
+        }
     } catch (error) {
         console.error('Error loading services:', error);
     }

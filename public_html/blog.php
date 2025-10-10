@@ -1,4 +1,3 @@
-
 <?php
 require_once 'includes/config.php';
 require_once 'includes/database.php';
@@ -139,12 +138,10 @@ include 'includes/header.php';
             <div class="text-center py-20 fade-in">
                 <i class="fas fa-newspaper text-6xl text-gray-300 mb-6"></i>
                 <h3 class="text-2xl font-bold text-gray-500 mb-4">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Články sa načítavajú...' : (CURRENT_LANG === 'ru' ? 'Статьи загружаются...' : 'Статті завантажуються...'); ?>
+                    <?php echo e(t('blog_loading_title')); ?>
                 </h3>
                 <p class="text-gray-400">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Čoskoro pridáme zaujímavé články o kráse a starostlivosti.' : 
-                              (CURRENT_LANG === 'ru' ? 'Скоро добавим интересные статьи о красоте и уходе.' : 
-                               'Незабаром додамо цікаві статті про красу та догляд.'); ?>
+                    <?php echo e(t('blog_loading_text')); ?>
                 </p>
             </div>
         <?php endif; ?>
@@ -156,12 +153,10 @@ include 'includes/header.php';
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 fade-in">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Odber noviniek' : (CURRENT_LANG === 'ru' ? 'Подписка на новости' : 'Підписка на новини'); ?>
+                <?php echo e(t('newsletter_title')); ?>
             </h2>
             <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                <?php echo CURRENT_LANG === 'sk' ? 'Prihláste sa na odber a získajte najnovšie tipy o kráse a starostlivosti priamo do emailu.' : 
-                          (CURRENT_LANG === 'ru' ? 'Подпишитесь и получайте последние советы о красоте и уходе прямо на email.' : 
-                           'Підпишіться та отримуйте останні поради про красу та догляд прямо на email.'); ?>
+                <?php echo e(t('newsletter_text')); ?>
             </p>
         </div>
         
@@ -172,7 +167,7 @@ include 'includes/header.php';
                        required 
                        class="flex-1 form-control">
                 <button type="submit" class="btn-primary px-6 py-3">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Prihlásiť' : (CURRENT_LANG === 'ru' ? 'Подписаться' : 'Підписатися'); ?>
+                    <?php echo e(t('newsletter_button')); ?>
                 </button>
             </form>
         </div>
@@ -184,7 +179,7 @@ include 'includes/header.php';
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Naše témy' : (CURRENT_LANG === 'ru' ? 'Наши темы' : 'Наші теми'); ?>
+                <?php echo e(t('blog_topics_title')); ?>
             </h2>
         </div>
         
@@ -195,12 +190,10 @@ include 'includes/header.php';
                     <i class="fas fa-cut text-3xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Kaderníctvo' : (CURRENT_LANG === 'ru' ? 'Парикмахерские услуги' : 'Перукарські послуги'); ?>
+                    <?php echo e(t('blog_topic_hair_title')); ?>
                 </h3>
                 <p class="text-olive-100">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Trendy, strihy, farbenie a starostlivosť o vlasy' : 
-                              (CURRENT_LANG === 'ru' ? 'Тренды, стрижки, окрашивание и уход за волосами' : 
-                               'Тренди, стрижки, фарбування та догляд за волоссям'); ?>
+                    <?php echo e(t('blog_topic_hair_desc')); ?>
                 </p>
             </div>
 
@@ -210,12 +203,10 @@ include 'includes/header.php';
                     <i class="fas fa-spa text-3xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Kozmetika' : (CURRENT_LANG === 'ru' ? 'Косметология' : 'Косметологія'); ?>
+                    <?php echo e(t('blog_topic_cosmetology_title')); ?>
                 </h3>
                 <p class="text-olive-100">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Ošetrenia pleti, anti-aging a domáca starostlivosť' : 
-                              (CURRENT_LANG === 'ru' ? 'Процедуры для кожи, anti-aging и домашний уход' : 
-                               'Процедури для шкіри, anti-aging та домашній догляд'); ?>
+                    <?php echo e(t('blog_topic_cosmetology_desc')); ?>
                 </p>
             </div>
 
@@ -225,12 +216,10 @@ include 'includes/header.php';
                     <i class="fas fa-hand-sparkles text-3xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Manikúra' : (CURRENT_LANG === 'ru' ? 'Маникюр' : 'Манікюр'); ?>
+                    <?php echo e(t('blog_topic_manicure_title')); ?>
                 </h3>
                 <p class="text-olive-100">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Nail art, gél laky a starostlivosť o nechty' : 
-                              (CURRENT_LANG === 'ru' ? 'Нейл-арт, гель-лаки и уход за ногтями' : 
-                               'Нейл-арт, гель-лаки та догляд за нігтями'); ?>
+                    <?php echo e(t('blog_topic_manicure_desc')); ?>
                 </p>
             </div>
         </div>
@@ -242,14 +231,10 @@ include 'includes/header.php';
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center fade-in">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Máte otázky o kráse?' : 
-                          (CURRENT_LANG === 'ru' ? 'Есть вопросы о красоте?' : 
-                           'Маєте питання про красу?'); ?>
+                <?php echo e(t('blog_cta_title')); ?>
             </h2>
             <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                <?php echo CURRENT_LANG === 'sk' ? 'Náš tím expertov vám rád poradí a naplánuje individuálnu starostlivosť.' : 
-                          (CURRENT_LANG === 'ru' ? 'Наша команда экспертов с радостью даст совет и спланирует индивидуальный уход.' : 
-                           'Наша команда експертів із радістю порадить та сплануює індивідуальний догляд.'); ?>
+                <?php echo e(t('blog_cta_text')); ?>
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center">

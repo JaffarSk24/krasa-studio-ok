@@ -1,4 +1,3 @@
-
 <?php
 require_once 'includes/config.php';
 require_once 'includes/database.php';
@@ -79,7 +78,7 @@ include 'includes/header.php';
                 <div class="text-center mt-12 fade-in">
                     <button id="load-more" class="btn-primary" data-page="2">
                         <i class="fas fa-plus mr-2"></i>
-                        <?php echo CURRENT_LANG === 'sk' ? 'Načítať viac' : (CURRENT_LANG === 'ru' ? 'Загрузить больше' : 'Завантажити більше'); ?>
+                        <?php echo e(t('gallery_load_more')); ?>
                     </button>
                 </div>
             <?php endif; ?>
@@ -87,12 +86,10 @@ include 'includes/header.php';
             <div class="text-center py-20 fade-in">
                 <i class="fas fa-camera text-6xl text-gray-300 mb-6"></i>
                 <h3 class="text-2xl font-bold text-gray-500 mb-4">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Galéria sa načítava...' : (CURRENT_LANG === 'ru' ? 'Галерея загружается...' : 'Галерея завантажується...'); ?>
+                    <?php echo e(t('gallery_loading_title')); ?>
                 </h3>
                 <p class="text-gray-400">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Čoskoro pridáme krásne fotografie nášho štúdia.' : 
-                              (CURRENT_LANG === 'ru' ? 'Скоро добавим красивые фотографии нашей студии.' : 
-                               'Незабаром додамо красиві фотографії нашої студії.'); ?>
+                    <?php echo e(t('gallery_loading_text')); ?>
                 </p>
             </div>
         <?php endif; ?>
@@ -104,12 +101,10 @@ include 'includes/header.php';
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 fade-in">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Naše priestory' : (CURRENT_LANG === 'ru' ? 'Наши помещения' : 'Наші приміщення'); ?>
+                <?php echo e(t('gallery_spaces_title')); ?>
             </h2>
             <p class="text-xl text-gray-600">
-                <?php echo CURRENT_LANG === 'sk' ? 'Moderné a komfortné prostredie pre vašu pohodu' : 
-                          (CURRENT_LANG === 'ru' ? 'Современная и комфортная обстановка для вашего комфорта' : 
-                           'Сучасне та комфортне середовище для вашого комфорту'); ?>
+                <?php echo e(t('gallery_spaces_subtitle')); ?>
             </p>
         </div>
         
@@ -120,12 +115,10 @@ include 'includes/header.php';
                     <i class="fas fa-chair text-olive-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Moderné vybavenie' : (CURRENT_LANG === 'ru' ? 'Современное оборудование' : 'Сучасне обладнання'); ?>
+                    <?php echo e(t('gallery_feature_equipment_title')); ?>
                 </h3>
                 <p class="text-gray-600">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Najmodernejšie zariadenie pre všetky naše služby' : 
-                              (CURRENT_LANG === 'ru' ? 'Самое современное оборудование для всех наших услуг' : 
-                               'Найсучасніше обладнання для всіх наших послуг'); ?>
+                    <?php echo e(t('gallery_feature_equipment_text')); ?>
                 </p>
             </div>
 
@@ -135,12 +128,10 @@ include 'includes/header.php';
                     <i class="fas fa-shield-alt text-olive-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Hygiena a bezpečnosť' : (CURRENT_LANG === 'ru' ? 'Гигиена и безопасность' : 'Гігієна та безпека'); ?>
+                    <?php echo e(t('gallery_feature_safety_title')); ?>
                 </h3>
                 <p class="text-gray-600">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Najvyššie štandardy čistoty a sterilizácie' : 
-                              (CURRENT_LANG === 'ru' ? 'Высочайшие стандарты чистоты и стерилизации' : 
-                               'Найвищі стандарти чистоти та стерилізації'); ?>
+                    <?php echo e(t('gallery_feature_safety_text')); ?>
                 </p>
             </div>
 
@@ -150,12 +141,10 @@ include 'includes/header.php';
                     <i class="fas fa-music text-olive-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Relaxačná atmosféra' : (CURRENT_LANG === 'ru' ? 'Расслабляющая атмосфера' : 'Розслаблююча атмосфера'); ?>
+                    <?php echo e(t('gallery_feature_atmosphere_title')); ?>
                 </h3>
                 <p class="text-gray-600">
-                    <?php echo CURRENT_LANG === 'sk' ? 'Príjemná hudba a pokojná atmosféra pre váš relax' : 
-                              (CURRENT_LANG === 'ru' ? 'Приятная музыка и спокойная атмосфера для вашего релакса' : 
-                               'Приємна музика та спокійна атмосфера для вашого релаксу'); ?>
+                    <?php echo e(t('gallery_feature_atmosphere_text')); ?>
                 </p>
             </div>
         </div>
@@ -167,14 +156,10 @@ include 'includes/header.php';
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                <?php echo CURRENT_LANG === 'sk' ? 'Navštívte nás osobne!' : 
-                          (CURRENT_LANG === 'ru' ? 'Посетите нас лично!' : 
-                           'Відвідайте нас особисто!'); ?>
+                <?php echo e(t('gallery_cta_title')); ?>
             </h2>
             <p class="text-xl text-olive-100 mb-8 max-w-3xl mx-auto">
-                <?php echo CURRENT_LANG === 'sk' ? 'Príďte sa presvedčiť o kvalite našich služieb a krásnych priestorov.' : 
-                          (CURRENT_LANG === 'ru' ? 'Приходите убедиться в качестве наших услуг и красивых помещений.' : 
-                           'Прийдіть переконатися в якості наших послуг та красивих приміщень.'); ?>
+                <?php echo e(t('gallery_cta_text')); ?>
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -187,7 +172,7 @@ include 'includes/header.php';
                 <a href="contacts.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" 
                    class="border-2 border-white text-white hover:bg-white hover:text-olive-600 px-8 py-4 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center">
                     <i class="fas fa-map-marker-alt mr-2"></i>
-                    <?php echo CURRENT_LANG === 'sk' ? 'Ako sa k nám dostať' : (CURRENT_LANG === 'ru' ? 'Как до нас добраться' : 'Як до нас дістатися'); ?>
+                    <?php echo e(t('gallery_cta_route_button')); ?>
                 </a>
             </div>
         </div>
@@ -195,84 +180,159 @@ include 'includes/header.php';
 </section>
 
 <!-- Lightbox Modal -->
-<div class="lightbox" id="lightbox">
-    <span class="close">&times;</span>
-    <img src="" alt="">
-    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded">
-        <p id="lightbox-description" class="text-sm"></p>
-    </div>
+<div id="lightbox" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50">
+    <button id="lightbox-close" type="button" class="absolute top-6 right-6 text-white text-3xl font-light focus:outline-none">
+        &times;
+    </button>
+    <button id="lightbox-prev" type="button" class="absolute left-6 top-1/2 -translate-y-1/2 text-white text-3xl font-light focus:outline-none px-3 py-2 bg-white/10 rounded-full hover:bg-white/20">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <img id="lightbox-image" src="" alt="" class="max-h-[80vh] max-w-[90vw] rounded-xl object-contain shadow-2xl">
+    <button id="lightbox-next" type="button" class="absolute right-6 top-1/2 -translate-y-1/2 text-white text-3xl font-light focus:outline-none px-3 py-2 bg-white/10 rounded-full hover:bg-white/20">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    <div id="lightbox-caption" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white bg-black/60 px-4 py-2 rounded-lg text-sm md:text-base"></div>
 </div>
 
 <script>
-// Gallery functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const galleryItems = document.querySelectorAll('.gallery-item img');
-    const images = <?php echo json_encode($images); ?>;
-    
-    galleryItems.forEach((img, index) => {
-        img.addEventListener('click', function() {
-            openLightbox(index);
-        });
-    });
-    
+document.addEventListener('DOMContentLoaded', () => {
+    const imagesData = <?php echo json_encode($images); ?>;
+    const altField = '<?php echo 'alt_' . CURRENT_LANG; ?>';
+    const descField = '<?php echo 'description_' . CURRENT_LANG; ?>';
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    const loadMoreBtn = document.getElementById('load-more');
+    const galleryGrid = document.querySelector('.gallery-grid');
+
+    let currentIndex = 0;
+
+    const getAlt = (image) =>
+        image?.[altField] || image?.alt || 'Krása štúdio OK';
+
+    const getDescription = (image) =>
+        image?.[descField] || image?.description || '';
+
+    function toggleArrows() {
+        const hasMultiple = imagesData.length > 1;
+        prevBtn.classList.toggle('hidden', !hasMultiple);
+        nextBtn.classList.toggle('hidden', !hasMultiple);
+    }
+
+    function showImage(index) {
+        const image = imagesData[index];
+        if (!image) return;
+
+        lightboxImage.src = 'assets/images/' + image.filename;
+        lightboxImage.alt = getAlt(image);
+        const description = getDescription(image);
+        lightboxCaption.textContent = description || getAlt(image);
+        toggleArrows();
+    }
+
     function openLightbox(index) {
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = lightbox.querySelector('img');
-        const description = document.getElementById('lightbox-description');
-        
-        if (images[index]) {
-            lightboxImg.src = 'assets/images/' + images[index].filename;
-            lightboxImg.alt = images[index].<?php echo 'alt_' . CURRENT_LANG; ?> || 'Krása štúdio OK';
-            description.textContent = images[index].<?php echo 'description_' . CURRENT_LANG; ?> || '';
-        }
-        
-        lightbox.style.display = 'block';
+        currentIndex = index;
+        showImage(currentIndex);
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
         document.body.style.overflow = 'hidden';
     }
-    
-    // Load more functionality
-    const loadMoreBtn = document.getElementById('load-more');
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', async function() {
-            const page = this.dataset.page;
+
+    function closeLightbox() {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        document.body.style.overflow = '';
+        lightboxImage.src = '';
+        lightboxImage.alt = '';
+        lightboxCaption.textContent = '';
+    }
+
+    function gotoPrev() {
+        if (!imagesData.length) return;
+        currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length;
+        showImage(currentIndex);
+    }
+
+    function gotoNext() {
+        if (!imagesData.length) return;
+        currentIndex = (currentIndex + 1) % imagesData.length;
+        showImage(currentIndex);
+    }
+
+    function attachLightboxHandler(element, index) {
+        element.addEventListener('click', () => openLightbox(index));
+    }
+
+    document
+        .querySelectorAll('.gallery-item')
+        .forEach((item, index) => attachLightboxHandler(item, index));
+
+    closeBtn.addEventListener('click', closeLightbox);
+    prevBtn.addEventListener('click', gotoPrev);
+    nextBtn.addEventListener('click', gotoNext);
+
+    lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (lightbox.classList.contains('hidden')) return;
+
+        if (event.key === 'Escape') {
+            closeLightbox();
+        } else if (event.key === 'ArrowLeft') {
+            gotoPrev();
+        } else if (event.key === 'ArrowRight') {
+            gotoNext();
+        }
+    });
+
+    if (loadMoreBtn && galleryGrid) {
+        loadMoreBtn.addEventListener('click', async () => {
+            const page = loadMoreBtn.dataset.page;
+
             try {
                 const response = await fetch(`api/gallery.php?page=${page}&limit=20`);
                 const newImages = await response.json();
-                
-                if (newImages.length > 0) {
-                    // Add new images to gallery
-                    const gallery = document.querySelector('.gallery-grid');
-                    newImages.forEach((image, index) => {
-                        const div = document.createElement('div');
-                        div.className = 'gallery-item fade-in';
-                        div.innerHTML = `
-                            <img src="assets/images/${image.filename}" 
-                                 alt="${image.alt}" 
-                                 loading="lazy"
-                                 class="w-full h-full object-cover cursor-pointer">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <i class="fas fa-search-plus text-white text-3xl"></i>
-                            </div>
-                        `;
-                        gallery.appendChild(div);
-                        
-                        // Add click event
-                        div.querySelector('img').addEventListener('click', () => {
-                            openLightbox(images.length + index);
-                        });
+
+                if (Array.isArray(newImages) && newImages.length) {
+                    newImages.forEach((image) => {
+                        const newIndex = imagesData.push(image) - 1;
+
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'gallery-item fade-in';
+                        wrapper.dataset.index = newIndex;
+
+                        const img = document.createElement('img');
+                        img.src = 'assets/images/' + image.filename;
+                        img.alt = getAlt(image);
+                        img.loading = 'lazy';
+                        img.className = 'w-full h-full object-cover cursor-pointer';
+
+                        const overlay = document.createElement('div');
+                        overlay.className = 'absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center';
+                        overlay.innerHTML = '<i class="fas fa-search-plus text-white text-3xl"></i>';
+
+                        wrapper.appendChild(img);
+                        wrapper.appendChild(overlay);
+                        galleryGrid.appendChild(wrapper);
+
+                        attachLightboxHandler(wrapper, newIndex);
                     });
-                    
-                    // Add new images to array
-                    images.push(...newImages);
-                    
-                    // Update button
-                    this.dataset.page = parseInt(page) + 1;
-                    
+
+                    loadMoreBtn.dataset.page = String(parseInt(page, 10) + 1);
+
                     if (newImages.length < 20) {
-                        this.style.display = 'none';
+                        loadMoreBtn.style.display = 'none';
                     }
                 } else {
-                    this.style.display = 'none';
+                    loadMoreBtn.style.display = 'none';
                 }
             } catch (error) {
                 console.error('Error loading more images:', error);
