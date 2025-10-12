@@ -1,22 +1,27 @@
+<?php
+require_once __DIR__ . '/config.php';
+
+$meta = [
+    'title' => $TITLE ?? 'Krása štúdio OK — Ružinov, Bratislava',
+    'description' => $DESCRIPTION ?? '',
+    'keywords' => $KEYWORDS ?? '',
+];
+?>
 <!DOCTYPE html>
 <html lang="<?php echo CURRENT_LANG; ?>" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <?php 
-    $meta = getPageMeta($page ?? 'home', $pageData ?? []);
-    ?>
-    
-    <title><?php echo e($meta['title']); ?></title>
-    <meta name="description" content="<?php echo e($meta['description']); ?>">
-    <meta name="keywords" content="<?php echo e($meta['keywords']); ?>">
+    <title><?php echo htmlspecialchars($meta['title'], ENT_QUOTES, 'UTF-8'); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($meta['description'], ENT_QUOTES, 'UTF-8'); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($meta['keywords'], ENT_QUOTES, 'UTF-8'); ?>">
     <meta name="author" content="Krása štúdio OK">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="<?php echo e($meta['title']); ?>">
-    <meta property="og:description" content="<?php echo e($meta['description']); ?>">
-    <meta property="og:image" content="<?php echo $meta['og_image']; ?>">
+    <meta property="og:title" content="<?php echo htmlspecialchars($meta['title'], ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($meta['description'], ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:image" content="<?php echo isset($meta['og_image']) ? htmlspecialchars($meta['og_image'], ENT_QUOTES, 'UTF-8') : ''; ?>">
     <meta property="og:url" content="<?php echo getCurrentUrl(); ?>">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="<?php echo CURRENT_LANG; ?>_<?php echo strtoupper(CURRENT_LANG); ?>">
@@ -27,7 +32,7 @@
         "@context": "https://schema.org",
         "@type": "BeautySalon",
         "name": "Krása štúdio OK",
-        "description": "<?php echo e($meta['description']); ?>",
+        "description": "<?php echo htmlspecialchars($meta['description'], ENT_QUOTES, 'UTF-8'); ?>",
         "url": "<?php echo SITE_URL; ?>",
         "telephone": "<?php echo getWhatsappNumber(); ?>",
         "address": {
