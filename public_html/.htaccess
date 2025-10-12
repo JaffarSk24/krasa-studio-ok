@@ -102,3 +102,6 @@ ErrorDocument 500 /error-500.php
 # Block sensitive dirs + запрет прямого доступа к includes/
 RedirectMatch 404 ^/(?:\.git|\.svn|\.hg|\.idea|vendor|node_modules)(?:/|$)
 RewriteRule ^includes/ - [R=404,L]
+
+# Перенаправление для статей блога
+RewriteRule ^blog/([a-z0-9\-]+)\.php$ /blog/article.php?slug=$1 [L,QSA]

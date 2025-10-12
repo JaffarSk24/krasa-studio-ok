@@ -40,3 +40,8 @@ build/
 *.pem
 *.key
 .htpasswd
+
+# Admin folder and specific API files to exclude
+/admin/
+/api/cleanup_blocked_slots.php
+/api/update-google-reviews-cache.php

@@ -30,6 +30,7 @@ try {
         throw new Exception('reCAPTCHA verification failed');
     }
 
+    // Нормализация данных
     $date       = $_POST['date'];
     $time       = $_POST['time'];
     try {
@@ -41,27 +42,43 @@ try {
     $serviceId  = $_POST['service_id'];
     $message    = $_POST['message'] ?? null;
 
-    $slotKey = "$date $time";
+    // Подключение к БД
+    $db = new Database();
+    $conn = $db->getConnection();
 
-    // Проверка блокировки
+    // Проверяем, есть ли клиент с таким телефоном
+    $stmtClient = $conn->prepare("SELECT id FROM contacts WHERE phone = ? LIMIT 1");
+    $stmtClient->execute([$phone]);
+    $client = $stmtClient->fetch(PDO::FETCH_ASSOC);
+
+    if ($client) {
+        $contactId = $client['id'];
+        // Обновляем имя и дату
+        $stmtUpdate = $conn->prepare("UPDATE contacts SET name = ?, updated_at = NOW() WHERE id = ?");
+        $stmtUpdate->execute([$name, $contactId]);
+    } else {
+        // Создаём нового клиента
+        $contactId = generateUUID();
+        $stmtInsert = $conn->prepare("INSERT INTO contacts (id, name, phone, status, created_at, updated_at) VALUES (?, ?, ?, 'new', NOW(), NOW())");
+        $stmtInsert->execute([$contactId, $name, $phone]);
+    }
+
+    // Проверка блокировки слота
+    $slotKey = "$date $time";
     $blockedFile = __DIR__ . '/../data/blocked_slots.txt';
     $blocked = file_exists($blockedFile) ? file($blockedFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
     if (in_array($slotKey, $blocked)) {
         throw new Exception("Slot already blocked: $slotKey");
     }
 
-    // Запись в БД
-    $db = new Database();
-    $conn = $db->getConnection();
+    // Запись бронирования
     $bookingId = generateUUID();
-
     $stmt = $conn->prepare("
         INSERT INTO bookings (id, booking_date, booking_time, service_id, client_name, client_phone, message, status, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', NOW())
     ");
     $dateObj = DateTime::createFromFormat('d-m-Y', $date);
     $dateIso = $dateObj ? $dateObj->format('Y-m-d') : $date;
-
     $stmt->execute([$bookingId, $dateIso, $time, $serviceId, $name, $phone, $message]);
 
     // Получаем данные услуги и категории

@@ -30,7 +30,7 @@ if (empty($posts)) {
             'excerpt_ru' => 'Откройте для себя последние тенденции в мире парикмахерского дела',
             'excerpt_ua' => 'Відкрийте для себе останні тенденції у світі перукарської справи',
             'slug' => 'trendy-kadernicke-sluzby-jar-2024',
-            'featured_image' => '1.webp',
+            'featured_image' => '/assets/images/1.webp',
             'published_at' => date('Y-m-d H:i:s', strtotime('-5 days')),
             'created_at' => date('Y-m-d H:i:s', strtotime('-5 days'))
         ],
@@ -43,7 +43,7 @@ if (empty($posts)) {
             'excerpt_ru' => 'Практические советы по домашнему уходу за волосами',
             'excerpt_ua' => 'Практичні поради з домашнього догляду за волоссям',
             'slug' => 'ako-spravne-osetrovat-vlasy-doma',
-            'featured_image' => '4.webp',
+            'featured_image' => '/assets/images/4.webp',
             'published_at' => date('Y-m-d H:i:s', strtotime('-10 days')),
             'created_at' => date('Y-m-d H:i:s', strtotime('-10 days'))
         ],
@@ -56,7 +56,7 @@ if (empty($posts)) {
             'excerpt_ru' => 'Специальные процедуры для чувствительных типов кожи',
             'excerpt_ua' => 'Спеціальні процедури для чутливих типів шкіри',
             'slug' => 'kozmeticke-osetrenia-pre-citlivu-plet',
-            'featured_image' => '2.webp',
+            'featured_image' => '/assets/images/2.webp',
             'published_at' => date('Y-m-d H:i:s', strtotime('-15 days')),
             'created_at' => date('Y-m-d H:i:s', strtotime('-15 days'))
         ]
@@ -91,7 +91,7 @@ include 'includes/header.php';
                         <!-- Featured Image -->
                         <div class="relative aspect-video bg-gray-200">
                             <?php if (!empty($post['featured_image'])): ?>
-                                <img src="assets/images/<?php echo e($post['featured_image']); ?>" 
+                                <img src="<?= e($post['featured_image']) ?>" 
                                      alt="<?php echo e(getLocalizedField($post, 'title')); ?>" 
                                      class="w-full h-full object-cover">
                             <?php else: ?>

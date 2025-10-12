@@ -1,0 +1,18 @@
+# robots.txt
+User-agent: *
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /vendor/
+Disallow: /cgi-bin/
+Disallow: /setup.php
+Disallow: /setup_admin.php
+Disallow: /install.php
+Disallow: /config.php
+Disallow: /*.env
+Disallow: /*.sql
+Disallow: /*.zip
+Disallow: /*.bak
+Disallow: /*.log
+
+# For other
+Allow: /
