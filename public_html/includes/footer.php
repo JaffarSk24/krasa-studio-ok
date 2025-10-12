@@ -18,12 +18,17 @@
                         </p>
                         
                         <!-- WhatsApp Button -->
-                        <?php $whatsappNumber = getWhatsappNumber(true); ?>
-                        <a href="#"
+                        <?php
+                        // digits-only номер и предзаполненное сообщение (если категория/услуга не заданы, внутри функции будут локализованные общие тексты)
+                        $waDigits = getWhatsappNumber(true);
+                        $waText = buildWhatsappMessage(null, null, CURRENT_LANG); // вернёт уже urlencode()
+                        $whatsappLink = 'https://wa.me/' . $waDigits . '?text=' . $waText;
+                        ?>
+                        <a href="<?php echo e($whatsappLink); ?>"
                            target="_blank"
                            rel="noopener noreferrer"
                            class="inline-flex items-center bg-olive-600 hover:bg-olive-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 js-whatsapp-link js-whatsapp-short"
-                           data-whatsapp-number="<?php echo htmlspecialchars($whatsappNumber); ?>"
+                           data-whatsapp-number="<?php echo htmlspecialchars($waDigits); ?>"
                            data-service-name=""
                            data-whatsapp-variant="short">
                             <i class="fab fa-whatsapp mr-2 text-lg"></i>

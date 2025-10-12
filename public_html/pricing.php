@@ -81,11 +81,14 @@ include 'includes/header.php';
                                     <?php
                                     $serviceName = getLocalizedField($service, 'name');
                                     $prefillTarget = CURRENT_LANG !== DEFAULT_LANGUAGE ? 'index.php?lang=' . CURRENT_LANG . '#booking' : 'index.php#booking';
-                                    $whatsappLink = sprintf(
-                                        'https://wa.me/%s?text=%s',
-                                        getWhatsappNumber(true),
-                                        buildWhatsappMessage($serviceName)
-                                    );
+
+                                    // digits-only номер из config (через WHATSAPP_NUMBER)
+                                    $waDigits = getWhatsappNumber(true);
+
+                                    // Формируем текст "Категория: Услуга" — buildWhatsappMessage возвращает urlencode()
+                                    $waText = buildWhatsappMessage($categoryName, $serviceName, CURRENT_LANG);
+
+                                    $whatsappLink = 'https://wa.me/' . $waDigits . '?text=' . $waText;
                                     ?>
                                     <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg card-hover">
                                         <div class="text-center">
@@ -135,7 +138,7 @@ include 'includes/header.php';
                                             </button>
                                             
                                             <!-- WhatsApp Button -->
-                                            <a href="<?php echo $whatsappLink; ?>"
+                                            <a href="<?php echo e($whatsappLink); ?>"
                                                target="_blank"
                                                rel="noopener noreferrer"
                                                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
@@ -163,7 +166,7 @@ include 'includes/header.php';
             </div>
         <?php else: ?>
             <div class="text-center py-20">
-                <i class="fas fa-euro-sign text-6xl text-gray-300.mb-6"></i>
+                <i class="fas fa-euro-sign text-6xl text-gray-300 mb-6"></i>
                 <h3 class="text-2xl font-bold text-gray-500 mb-4">
                     <?php echo e(t('pricing_loading_title')); ?>
                 </h3>
@@ -204,13 +207,13 @@ include 'includes/header.php';
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <button onclick="window.location.href='index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>#booking'" 
-                        class="bg-white text-olive-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold transition-colors.duration-200 inline-flex items-center">
+                        class="bg-white text-olive-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center">
                     <i class="fas fa-calendar-alt mr-2"></i>
                     <?php echo e(t('book_now')); ?>
                 </button>
                 
                 <a href="contacts.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" 
-                   class="border-2 border-white text-white hover:bg-white hover:text-olive-600 px-8.py-4 rounded-lg.font-semibold transition-colors.duration-200 inline-flex.items-center">
+                   class="border-2 border-white text-white hover:bg-white hover:text-olive-600 px-8 py-4 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center">
                     <i class="fas fa-phone mr-2"></i>
                     <?php echo e(t('contact_us')); ?>
                 </a>

@@ -248,7 +248,7 @@ function normalizePhoneNumber(string $input): string
     throw new InvalidArgumentException('PHONE_UNSUPPORTED');
 }
 
-function buildWhatsappMessage(?string $serviceName = null, ?string $lang = null): string
+function buildWhatsappMessage(?string $categoryName = null, ?string $serviceName = null, ?string $lang = null): string
 {
     if ($lang === null) {
         $lang = CURRENT_LANG;
@@ -256,9 +256,15 @@ function buildWhatsappMessage(?string $serviceName = null, ?string $lang = null)
 
     $greeting = t('whatsapp_greeting', $lang);
     $template = t('whatsapp_message_with_service', $lang);
-    $serviceText = $serviceName !== null && $serviceName !== ''
-        ? $serviceName
-        : t('whatsapp_fallback_service', $lang);
+    
+    // Формируем текст услуги с категорией
+    if ($categoryName !== null && $serviceName !== null) {
+        $serviceText = $categoryName . ': ' . $serviceName;
+    } elseif ($serviceName !== null && $serviceName !== '') {
+        $serviceText = $serviceName;
+    } else {
+        $serviceText = t('whatsapp_fallback_service', $lang);
+    }
 
     $message = trim($greeting . ' ' . str_replace(':service', $serviceText, $template));
 
@@ -282,7 +288,7 @@ function buildWhatsappMessageShort(?string $serviceName = null): string
 
 function getWhatsappNumber(bool $digitsOnly = false): string
 {
-    $number = '+421915310337';
+    $number = WHATSAPP_NUMBER; // Берем из config.php
 
     return $digitsOnly
         ? preg_replace('/\D/', '', $number)

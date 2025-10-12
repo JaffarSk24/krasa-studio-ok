@@ -116,14 +116,18 @@ include 'includes/header.php';
                                                             <?php
                                                             $serviceName = getLocalizedField($service, 'name');
                                                             $prefillCategoryName = $categoryName;
-                                                            $whatsappLink = sprintf(
-                                                                'https://wa.me/%s?text=%s',
-                                                                getWhatsappNumber(true),
-                                                                buildWhatsappMessage($serviceName)
-                                                            );
+
+                                                            // digits-only номер из config (через WHATSAPP_NUMBER), getWhatsappNumber(true) вернёт только цифры
+                                                            $waDigits = getWhatsappNumber(true);
+
+                                                            // Формируем текст с категорией и услугой. buildWhatsappMessage уже возвращает urlencode()
+                                                            $waText = buildWhatsappMessage($prefillCategoryName, $serviceName, CURRENT_LANG);
+
+                                                            // Полная безопасная ссылка
+                                                            $whatsappLink = 'https://wa.me/' . $waDigits . '?text=' . $waText;
                                                             ?>
-                                                            
-                                                            <a href="<?php echo $whatsappLink; ?>" 
+                                                                                                                
+                                                            <a href="<?php echo e($whatsappLink); ?>" 
                                                                target="_blank" 
                                                                rel="noopener noreferrer"
                                                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">

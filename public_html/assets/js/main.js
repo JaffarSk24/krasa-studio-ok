@@ -21,31 +21,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
 let servicesCache = [];
 
-function buildWhatsappMessageClient(serviceName = '', variant = 'default') {
+function buildWhatsappMessageClient(categoryName = '', serviceName = '', variant = 'default') {
     const translations = window.translations || {};
-    const fallback = translations.whatsapp_fallback_service || 'vybranú službu';
-    const serviceText = serviceName || fallback;
 
-    if (variant === 'short' && translations.whatsapp_message_short) {
-        // Для короткого варианта используем ровно перевод: не добавляем название услуги.
-        return encodeURIComponent(translations.whatsapp_message_short);
+    // fallback для названия услуги
+    const fallbackService = translations.whatsapp_fallback_service || 'vybranú službu';
+    const serviceText = (serviceName || '').toString().trim() || fallbackService;
+
+    // выбор шаблона: сначала нейтральный (если есть), потом общий, потом дефолт (без гендерной формы)
+    const shortTpl = translations.whatsapp_message_short || null;
+    const neutralTpl = translations.whatsapp_message_with_service_neutral || translations.whatsapp_message_with_service || null;
+    const greeting = translations.whatsapp_greeting || '';
+
+    if (variant === 'short' && shortTpl) {
+        // короткий вариант — просто перевод (не добавляем имя услуги)
+        return encodeURIComponent(String(shortTpl).trim());
     }
 
-    const greeting = translations.whatsapp_greeting || 'Dobrý deň!';
-    const template = translations.whatsapp_message_with_service || 'Rada by som si rezervovala službu: :service.';
-    const text = `${greeting} ${template.replace(':service', serviceText)}`.trim();
-    return encodeURIComponent(text);
+    // Собираем текст: если есть нейтральный шаблон — используем его с подстановкой :service
+    let body = neutralTpl
+        ? String(neutralTpl).replace(':service', serviceText)
+        : (greeting ? (greeting + ' ') : '') + `Chcem si rezervovať službu: ${serviceText}.`;
+
+    body = body.trim();
+
+    // Всегда возвращаем закодированную строку (encodeURIComponent), чтобы link строился безопасно
+    return encodeURIComponent(body);
 }
 
-function updateWhatsappLinks(selectedServiceName = '') {
-    // Обновляем ТОЛЬКО кнопки, отмеченные классом js-whatsapp-short
-    document.querySelectorAll('.js-whatsapp-short').forEach(link => {
-        const number = link.dataset.whatsappNumber || '421915310337';
-        const linkServiceName = link.dataset.serviceName || '';
-        const serviceName = selectedServiceName || linkServiceName;
-        const variant = link.dataset.whatsappVariant || 'short'; // короткий по умолчанию для этой группы
-        const encodedMessage = buildWhatsappMessageClient(serviceName, variant);
-        link.href = `https://wa.me/${number}?text=${encodedMessage}`;
+function updateWhatsappLinks(selectedCategoryName = '', selectedServiceName = '') {
+    // Обновляем кнопки, отмеченные классами js-whatsapp-short или js-whatsapp-link
+    document.querySelectorAll('.js-whatsapp-short, .js-whatsapp-link').forEach(link => {
+        // Приоритет источников номера:
+        // 1) data-whatsapp-number на элементе
+        // 2) window.WHATSAPP_NUMBER (если frontend инициализировали)
+        // 3) дефолтная строка '421915310337'
+        let numberRaw = (link.dataset.whatsappNumber || window.WHATSAPP_NUMBER || '421915310337').toString();
+        // Нормализуем к digits-only
+        const numberDigits = numberRaw.replace(/\D/g, '') || '421915310337';
+
+        // category/service берём либо из аргумента, либо из data-атрибутов
+        const categoryName = (selectedCategoryName || link.dataset.categoryName || '').toString().trim();
+        const linkServiceName = (link.dataset.serviceName || link.dataset.service || '').toString().trim();
+        const serviceName = (selectedServiceName || linkServiceName).trim();
+
+        const variant = link.dataset.whatsappVariant || 'short';
+
+        // Формируем сообщение (функция вернёт already-encoded строку)
+        const encodedMessage = buildWhatsappMessageClient(categoryName || null, serviceName || null, variant);
+
+        // Собираем безопасную ссылку и назначаем href
+        link.setAttribute('href', `https://wa.me/${numberDigits}?text=${encodedMessage}`);
+        // Обновляем data-whatsapp-number на элементе нормализованным значением для консистентности
+        link.dataset.whatsappNumber = numberDigits;
     });
 }
 

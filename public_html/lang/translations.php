@@ -41,10 +41,10 @@ $translations = [
         // Телефоны и WhatsApp
         'invalid_phone_number' => 'Zadajte prosím platné telefónne číslo.',
         'whatsapp_greeting' => 'Dobrý deň!',
-        'whatsapp_message_with_service' => 'Rada by som si rezervovala termín na službu :service.',
+        'whatsapp_message_with_service' => 'Žiadam o termín na službu :service.',
         'whatsapp_fallback_service' => 'vybranú službu',
-        'whatsapp_message_default' => 'Zdravím! Chcela by som si rezervovať termín.',
-        'whatsapp_message_short'   => 'Dobrý deň! Rada by som si rezervovala termín.',
+        'whatsapp_message_default' => 'Zdravím! Žiadam o termín.',
+        'whatsapp_message_short'   => 'Dobrý deň! Žiadam o termín..',
 
         // Плашка подтверждения отправки формы
         'booking_success_title' => 'Rezervácia odoslaná!',
@@ -79,7 +79,7 @@ $translations = [
         'opening_hours' => 'Otváracie hodiny',
         'address' => 'Adresa',
         'follow_us' => 'Sledujte nás',
-        'hours_schedule' => 'Pondelok - Piatok: 9:00 - 21:00',
+        'hours_schedule' => 'Pondelok - Piatok: <br>9:00 - 21:00',
         'footer_description' => 'Váš salón krásy v srdci Bratislavy. Profesionálne služby pre vašu krásu a pohodu.',
 
         // Контакты
@@ -251,10 +251,10 @@ $translations = [
         // Телефоны и WhatsApp
         'invalid_phone_number' => 'Пожалуйста, укажите корректный номер телефона.',
         'whatsapp_greeting' => 'Здравствуйте!',
-        'whatsapp_message_with_service' => 'Хотела бы записаться на услугу :service.',
+        'whatsapp_message_with_service' => 'Хочу записаться на услугу :service.',
         'whatsapp_fallback_service' => 'выбранную услугу',
-        'whatsapp_message_default' => 'Здравствуйте! Я хотела бы записаться на прием.',
-        'whatsapp_message_short'   => 'Здравствуйте! Хотела бы записаться на приём.',
+        'whatsapp_message_default' => 'Здравствуйте! Я хочу записаться на прием.',
+        'whatsapp_message_short'   => 'Здравствуйте! Хочу записаться на приём.',
 
         // Плашка подтверждения отправки формы
         'booking_success_title' => 'Заявка успешно отправлена!',
@@ -289,7 +289,7 @@ $translations = [
         'opening_hours' => 'Часы работы',
         'address' => 'Адрес',
         'follow_us' => 'Следите за нами',
-        'hours_schedule' => 'Понедельник - Пятница: 9:00 - 21:00',
+        'hours_schedule' => 'Понедельник - Пятница: <br>9:00 - 21:00',
         'footer_description' => 'Ваш салон красоты в сердце Братиславы. Профессиональные услуги для вашей красоты и комфорта.',
 
         // Контакты
@@ -461,10 +461,10 @@ $translations = [
         // Телефоны и WhatsApp
         'invalid_phone_number' => 'Будь ласка, вкажіть коректний номер телефону.',
         'whatsapp_greeting' => 'Добрий день!',
-        'whatsapp_message_with_service' => 'Хотіла б записатися на послугу :service.',
+        'whatsapp_message_with_service' => 'Хочу записатися на послугу :service.',
         'whatsapp_fallback_service' => 'обрану послугу',
-        'whatsapp_message_default' => 'Здравствуйте! Я хотіла б записатися на процедуру',
-        'whatsapp_message_short'   => 'Доброго дня! Хотіла б записатися на візит.',
+        'whatsapp_message_default' => 'Здравствуйте! Хочу записатися на процедуру',
+        'whatsapp_message_short'   => 'Доброго дня! Хочу записатися на візит.',
 
         // Плашка подтверждения отправки формы
         'booking_success_title' => 'Заявку успішно відправлено!',
@@ -499,7 +499,7 @@ $translations = [
         'opening_hours' => 'Години роботи',
         'address' => 'Адреса',
         'follow_us' => 'Слідкуйте за нами',
-        'hours_schedule' => 'Понеділок - Пʼятниця: 9:00 - 21:00',
+        'hours_schedule' => 'Понеділок - Пʼятниця: <br>9:00 - 21:00',
         'footer_description' => 'Ваш салон краси у серці Братислави. Професійні послуги для вашої краси та комфорту.',
 
         // Контакты
