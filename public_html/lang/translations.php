@@ -142,6 +142,8 @@ $translations = [
         'services_loading_message' => 'Služby sa načítavajú...',
         'services_cta_title' => 'Stačí si vybrať ten pravý čas',
         'services_cta_text' => 'Spojte sa s nami cez WhatsApp alebo odošlite rezerváciu online – radi poradíme s výberom služby a voľným termínom.',
+        'show_more' => 'Zobraziť viac',
+        'show_less' => 'Menej',
 
         // Прайс
         'pricing_title' => 'Cenník služieb',
@@ -352,6 +354,8 @@ $translations = [
         'services_loading_message' => 'Услуги загружаются...',
         'services_cta_title' => 'Достаточно выбрать подходящее время',
         'services_cta_text' => 'Свяжитесь с нами в WhatsApp или отправьте заявку онлайн — поможем подобрать услугу и свободное время.',
+        'show_more' => 'Показать ещё',
+        'show_less' => 'Свернуть',
 
         // Прайс
         'pricing_title' => 'Прайс-лист услуг',
@@ -562,6 +566,8 @@ $translations = [
         'services_loading_message' => 'Послуги завантажуються...',
         'services_cta_title' => 'Достатньо обрати зручний час',
         'services_cta_text' => 'Звʼяжіться з нами у WhatsApp або надішліть запит онлайн — порадимо з вибором послуги та вільним часом.',
+        'show_more' => 'Показати ще',
+        'show_less' => 'Згорнути',
 
         // Прайс
         'pricing_title' => 'Прайс-лист послуг',

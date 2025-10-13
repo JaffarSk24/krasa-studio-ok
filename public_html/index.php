@@ -249,7 +249,6 @@ include 'includes/header.php';
         <?php echo t('loading_reviews'); ?>
       </div>
     </div>
-  </div>
 </section>
 
 <!-- Gallery Preview -->

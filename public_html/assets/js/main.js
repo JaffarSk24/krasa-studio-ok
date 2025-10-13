@@ -92,9 +92,16 @@ function initScrollAnimations() {
         });
     }, observerOptions);
     
-    document.querySelectorAll('.fade-in').forEach(el => {
+    const fadeIns = document.querySelectorAll('.fade-in');
+    fadeIns.forEach(el => {
         observer.observe(el);
     });
+
+    // Добавляем visible для второго блока только на нужных страницах
+    const path = window.location.pathname;
+    if ((path === '/services.php' || path === '/pricing.php') && fadeIns.length > 1 && !fadeIns[1].classList.contains('visible')) {
+        fadeIns[1].classList.add('visible');
+    }
 }
 
 // Lightbox functionality for gallery
@@ -151,23 +158,30 @@ function initAccordion() {
         header.addEventListener('click', function() {
             const content = this.nextElementSibling;
             const icon = this.querySelector('.accordion-icon');
-            
-            content.classList.toggle('open');
-            
-            if (icon) {
-                icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-            }
-            
-            accordionHeaders.forEach(otherHeader => {
-                if (otherHeader !== this) {
-                    const otherContent = otherHeader.nextElementSibling;
-                    const otherIcon = otherHeader.querySelector('.accordion-icon');
-                    otherContent.classList.remove('open');
-                    if (otherIcon) {
-                        otherIcon.style.transform = 'rotate(0deg)';
+            const isOpen = content.classList.contains('open');
+
+            if (isOpen) {
+                // Закрываем текущий
+                content.style.maxHeight = null;
+                content.classList.remove('open');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Закрываем все остальные
+                accordionHeaders.forEach(otherHeader => {
+                    if (otherHeader !== this) {
+                        const otherContent = otherHeader.nextElementSibling;
+                        const otherIcon = otherHeader.querySelector('.accordion-icon');
+                        otherContent.style.maxHeight = null;
+                        otherContent.classList.remove('open');
+                        if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
                     }
-                }
-            });
+                });
+
+                // Открываем текущий
+                content.classList.add('open');
+                content.style.maxHeight = content.scrollHeight + 'px';
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
         });
     });
 }
@@ -606,7 +620,7 @@ const MIN_RATING      = 4;
 const CACHE_KEY       = 'gr_cache_v1';
 const CACHE_TTL_MS    = 7 * 24 * 60 * 60 * 1000; // 7 дней
 
-function fetchWithTimeout(url, options = {}, timeoutMs = 6000) {
+function fetchWithTimeout(url, options = {}, timeoutMs = 12000) {
   return Promise.race([
     fetch(url, options),
     new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs))
@@ -698,7 +712,6 @@ async function loadGoogleReviews() {
   const container = document.getElementById('google-reviews');
   if (!container) return;
 
-  // Кэш
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (raw) {
@@ -724,7 +737,6 @@ async function loadGoogleReviews() {
       throw new Error('Empty result');
     }
   } catch (e) {
-    console.warn('Failed to load Google Reviews:', e);
     const placeholder = document.getElementById('google-reviews-placeholder');
     if (placeholder) {
       placeholder.textContent = window.translations?.no_reviews || 'Reviews will appear soon.';
@@ -734,13 +746,16 @@ async function loadGoogleReviews() {
 
 function renderReviews(reviews) {
   const container = document.getElementById('google-reviews');
-  const placeholder = document.getElementById('google-reviews-placeholder');
   if (!container) return;
-  
-  // Очищаем контейнер от старых карточек
+
   container.innerHTML = '';
-  
+
   const filtered = (reviews || []).filter(r => Number(r.rating) >= MIN_RATING).slice(0, 5);
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8">No reviews to display.</p>';
+    return;
+  }
 
   filtered.forEach(r => {
     const card = document.createElement('div');
@@ -771,6 +786,32 @@ function escapeHtml(str) {
 
 // Global variables for reCAPTCHA
 let recaptchaSiteKey = window.recaptchaSiteKey || '';
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.btn-toggle-services').forEach(button => {
+    const targetId = button.dataset.target;
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // Проверяем, нужно ли показывать кнопку (если контент выше max-height)
+    if (target.scrollHeight <= target.clientHeight) {
+      button.style.display = 'none';
+      return;
+    }
+
+    button.addEventListener('click', () => {
+      const expanded = target.classList.toggle('expanded');
+      button.textContent = expanded ? window.translations?.show_less || 'Zbaliť' : window.translations?.show_more || 'Rozbaliť';
+
+      // Обновляем max-height родительского .accordion-content
+      const accordionContent = target.closest('.accordion-content');
+      if (accordionContent && accordionContent.classList.contains('open')) {
+        // Устанавливаем max-height равным scrollHeight, чтобы раскрыть полностью
+        accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+      }
+    });
+  });
+});
 
 window.smoothScrollTo = smoothScrollTo;
 window.loadServices = loadServices;

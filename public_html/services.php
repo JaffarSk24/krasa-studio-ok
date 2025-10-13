@@ -63,6 +63,7 @@ include 'includes/header.php';
                     $category = $categoryData['category'];
                     $categoryServices = $categoryData['services'];
                     $categoryName = getLocalizedField($category, 'category_name');
+                    $categoryId = $category['category_id'];
                     ?>
                     
                     <div class="accordion-item">
@@ -81,79 +82,86 @@ include 'includes/header.php';
                         <div class="accordion-content">
                             <div class="accordion-body">
                                 <?php if (!empty($categoryServices)): ?>
-                                    <div class="grid gap-6">
-                                        <?php foreach ($categoryServices as $service): ?>
-                                            <div class="bg-gray-50 rounded-lg p-6 service-card">
-                                                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                                    <div class="flex-1">
-                                                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                                                            <?php echo e(getLocalizedField($service, 'name')); ?>
-                                                        </h3>
-                                                        
-                                                        <?php $description = getLocalizedField($service, 'description'); ?>
-                                                        <?php if ($description): ?>
-                                                            <p class="text-gray-600 mb-3">
-                                                                <?php echo e($description); ?>
-                                                            </p>
-                                                        <?php endif; ?>
-                                                        
-                                                        <div class="flex items-center gap-4 text-sm text-gray-500">
-                                                            <div class="flex items-center">
-                                                                <i class="fas fa-clock mr-1"></i>
-                                                                <?php echo formatTime($service['duration']); ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                                                        <div class="text-right">
-                                                            <div class="text-2xl font-bold text-olive-600">
-                                                                <?php echo formatPrice($service['price']); ?>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="flex gap-2">
-                                                            <?php
-                                                            $serviceName = getLocalizedField($service, 'name');
-                                                            $prefillCategoryName = $categoryName;
-
-                                                            // digits-only номер из config (через WHATSAPP_NUMBER), getWhatsappNumber(true) вернёт только цифры
-                                                            $waDigits = getWhatsappNumber(true);
-
-                                                            // Формируем текст с категорией и услугой. buildWhatsappMessage уже возвращает urlencode()
-                                                            $waText = buildWhatsappMessage($prefillCategoryName, $serviceName, CURRENT_LANG);
-
-                                                            // Полная безопасная ссылка
-                                                            $whatsappLink = 'https://wa.me/' . $waDigits . '?text=' . $waText;
-                                                            ?>
-                                                                                                                
-                                                            <a href="<?php echo e($whatsappLink); ?>" 
-                                                               target="_blank" 
-                                                               rel="noopener noreferrer"
-                                                               class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
-                                                                <i class="fab fa-whatsapp mr-1"></i>
-                                                                <span class="hidden sm:inline">WhatsApp</span>
-                                                            </a>
+                                    <div class="category-services" id="category-services-<?php echo $categoryId; ?>">
+                                        <div class="grid gap-6">
+                                            <?php foreach ($categoryServices as $service): ?>
+                                                <div class="bg-gray-50 rounded-lg p-6 service-card">
+                                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                                        <div class="flex-1">
+                                                            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                                                                <?php echo e(getLocalizedField($service, 'name')); ?>
+                                                            </h3>
                                                             
-                                                            <button
-                                                                type="button"
-                                                                class="btn-primary px-4 py-2 flex items-center prefill-booking-btn"
-                                                                data-category-id="<?php echo $service['category_id']; ?>"
-                                                                data-service-id="<?php echo $service['id']; ?>"
-                                                                data-category-name="<?php echo e($prefillCategoryName); ?>"
-                                                                data-service-name="<?php echo e($serviceName); ?>"
-                                                                data-lang="<?php echo CURRENT_LANG; ?>"
-                                                                data-default-lang="<?php echo DEFAULT_LANGUAGE; ?>"
-                                                                data-target="<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? 'index.php?lang=' . CURRENT_LANG . '#booking' : 'index.php#booking'; ?>">
-                                                                <i class="fas fa-calendar-alt mr-1"></i>
-                                                                <span class="hidden sm:inline"><?php echo e(t('book_service')); ?></span>
-                                                            </button>
+                                                            <?php $description = getLocalizedField($service, 'description'); ?>
+                                                            <?php if ($description): ?>
+                                                                <p class="text-gray-600 mb-3">
+                                                                    <?php echo e($description); ?>
+                                                                </p>
+                                                            <?php endif; ?>
+                                                            
+                                                            <div class="flex items-center gap-4 text-sm text-gray-500">
+                                                                <div class="flex items-center">
+                                                                    <i class="fas fa-clock mr-1"></i>
+                                                                    <?php echo formatTime($service['duration']); ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                                                            <div class="text-right">
+                                                                <div class="text-2xl font-bold text-olive-600">
+                                                                    <?php echo formatPrice($service['price']); ?>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="flex gap-2">
+                                                                <?php
+                                                                $serviceName = getLocalizedField($service, 'name');
+                                                                $prefillCategoryName = $categoryName;
+
+                                                                // digits-only номер из config (через WHATSAPP_NUMBER), getWhatsappNumber(true) вернёт только цифры
+                                                                $waDigits = getWhatsappNumber(true);
+
+                                                                // Формируем текст с категорией и услугой. buildWhatsappMessage уже возвращает urlencode()
+                                                                $waText = buildWhatsappMessage($prefillCategoryName, $serviceName, CURRENT_LANG);
+
+                                                                // Полная безопасная ссылка
+                                                                $whatsappLink = 'https://wa.me/' . $waDigits . '?text=' . $waText;
+                                                                ?>
+                                                                                                                    
+                                                                <a href="<?php echo e($whatsappLink); ?>" 
+                                                                   target="_blank" 
+                                                                   rel="noopener noreferrer"
+                                                                   class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                                                                    <i class="fab fa-whatsapp mr-1"></i>
+                                                                    <span class="hidden sm:inline">WhatsApp</span>
+                                                                </a>
+                                                                
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn-primary px-4 py-2 flex items-center prefill-booking-btn"
+                                                                    data-category-id="<?php echo $service['category_id']; ?>"
+                                                                    data-service-id="<?php echo $service['id']; ?>"
+                                                                    data-category-name="<?php echo e($prefillCategoryName); ?>"
+                                                                    data-service-name="<?php echo e($serviceName); ?>"
+                                                                    data-lang="<?php echo CURRENT_LANG; ?>"
+                                                                    data-default-lang="<?php echo DEFAULT_LANGUAGE; ?>"
+                                                                    data-target="<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? 'index.php?lang=' . CURRENT_LANG . '#booking' : 'index.php#booking'; ?>">
+                                                                    <i class="fas fa-calendar-alt mr-1"></i>
+                                                                    <span class="hidden sm:inline"><?php echo e(t('book_service')); ?></span>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
+                                        </div>
                                     </div>
+                                    <?php if (count($categoryServices) > 4): ?>
+                                        <button class="btn-toggle-services" data-target="category-services-<?php echo $categoryId; ?>">
+                                            <?php echo t('show_more'); ?>
+                                        </button>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         </div>
