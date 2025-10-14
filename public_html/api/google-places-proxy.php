@@ -1,11 +1,15 @@
 <?php
 // api/google-places-proxy.php
 // Прокси Google Place Details с файловым кэшем на 7 дней
+// Всегда запрашиваем оригинальные тексты отзывов (reviews_no_translations=true),
+// при этом язык используем только для стабильного ключа кэша.
 
 header('Content-Type: application/json; charset=utf-8');
 
 $placeId = $_GET['place_id'] ?? '';
-$lang    = $_GET['language'] ?? 'sk';
+$langRaw = $_GET['language'] ?? '';        // что пришло с фронта
+$lang    = $langRaw ? strtolower($langRaw) : 'sk'; // язык только для ключа кэша
+
 if (!$placeId) {
     http_response_code(400);
     echo json_encode(['error' => 'missing_place_id']);
@@ -36,17 +40,22 @@ $fields = implode(',', [
     'icon','icon_mask_base_uri','icon_background_color','reviews'
 ]);
 
-$url = 'https://maps.googleapis.com/maps/api/place/details/json?' . http_build_query([
-    'place_id' => $placeId,
-    'fields'   => $fields,
-    'key'      => GOOGLE_API_KEY,
-    'language' => $lang
-]);
+// Формируем запрос к Google: используем язык (для возможной сортировки/метаданных),
+// но главное — просим вернуть оригинальные тексты отзывов
+$query = [
+    'place_id'                 => $placeId,
+    'fields'                   => $fields,
+    'key'                      => GOOGLE_API_KEY,
+    'language'                 => $lang,              // стабилизирует кэш
+    'reviews_no_translations'  => 'true'              // оригинальные тексты отзывов
+];
+
+$url = 'https://maps.googleapis.com/maps/api/place/details/json?' . http_build_query($query);
 
 $ch = curl_init($url);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT => 8,
+    CURLOPT_TIMEOUT => 10,
     CURLOPT_CONNECTTIMEOUT => 5,
     CURLOPT_USERAGENT => 'KrasaStudioOK/1.0'
 ]);
@@ -61,5 +70,6 @@ if ($err || $code >= 400 || !$resp) {
     exit;
 }
 
+// Сохраняем кэш и отдаём ответ
 @file_put_contents($cacheFile, $resp);
 echo $resp;
