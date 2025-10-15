@@ -126,7 +126,7 @@ include 'includes/header.php';
             </div>
 
             <div class="text-center">
-                <div class="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center.mx-auto mb-4">
+                <div class="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-clock text-3xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3"><?php echo e(t('about_choose_us_comfort')); ?></h3>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://studio-krasy.sk/?lang=sk</loc>
+    <lastmod>2025-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://studio-krasy.sk/?lang=sk" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://studio-krasy.sk/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://studio-krasy.sk/?lang=ua" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studio-krasy.sk/?lang=sk" />
+  </url>
+  <url>
+    <loc>https://studio-krasy.sk/services.php?lang=sk</loc>
+    <lastmod>2025-10-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://studio-krasy.sk/services.php?lang=sk" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://studio-krasy.sk/services.php?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://studio-krasy.sk/services.php?lang=ua" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studio-krasy.sk/services.php?lang=sk" />
+  </url>
+  <url>
+    <loc>https://studio-krasy.sk/pricing.php?lang=sk</loc>
+    <lastmod>2025-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://studio-krasy.sk/pricing.php?lang=sk" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://studio-krasy.sk/pricing.php?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://studio-krasy.sk/pricing.php?lang=ua" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studio-krasy.sk/pricing.php?lang=sk" />
+  </url>
+  <url>
+    <loc>https://studio-krasy.sk/gallery.php?lang=sk</loc>
+    <lastmod>2025-10-10</lastmod>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://studio-krasy.sk/gallery.php?lang=sk" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://studio-krasy.sk/gallery.php?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://studio-krasy.sk/gallery.php?lang=ua" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studio-krasy.sk/gallery.php?lang=sk" />
+  </url>
+  <url>
+    <loc>https://studio-krasy.sk/blog.php?lang=sk</loc>
+    <lastmod>2025-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://studio-krasy.sk/blog.php?lang=sk" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://studio-krasy.sk/blog.php?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://studio-krasy.sk/blog.php?lang=ua" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studio-krasy.sk/blog.php?lang=sk" />
+  </url>
+  <url>
+    <loc>https://studio-krasy.sk/contacts.php?lang=sk</loc>
+    <lastmod>2025-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://studio-krasy.sk/contacts.php?lang=sk" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://studio-krasy.sk/contacts.php?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://studio-krasy.sk/contacts.php?lang=ua" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studio-krasy.sk/contacts.php?lang=sk" />
+  </url>
+  <url>
+    <loc>https://studio-krasy.sk/about.php?lang=sk</loc>
+    <lastmod>2025-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://studio-krasy.sk/about.php?lang=sk" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://studio-krasy.sk/about.php?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://studio-krasy.sk/about.php?lang=ua" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://studio-krasy.sk/about.php?lang=sk" />
+  </url>
+</urlset>

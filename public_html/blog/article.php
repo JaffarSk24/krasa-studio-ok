@@ -18,8 +18,8 @@ if ($slug === '') {
 $db = new Database();
 $conn = $db->getConnection();
 
-$lang = $_GET['lang'] ?? ($_SESSION['lang'] ?? 'ru');
-$lang = in_array($lang, ['sk', 'ru', 'ua']) ? $lang : 'ru';
+$lang = $_GET['lang'] ?? ($_SESSION['lang'] ?? 'sk');
+$lang = in_array($lang, ['sk', 'ru', 'ua']) ? $lang : 'sk';
 
 $titleField = "title_{$lang}";
 $excerptField = "excerpt_{$lang}";
@@ -63,7 +63,7 @@ include __DIR__ . '/../includes/header.php';
             <p class="text-sm text-gray-500 mb-4">Опубликовано: <?= esc($publishedDate) ?></p>
         <?php endif; ?>
         <?php if (!empty($post['featured_image'])): ?>
-            <img src="<?= esc($post['featured_image']) ?>" alt="<?= esc($post['title']) ?>" style="max-width:100%; height:auto; margin-bottom:1rem;" />
+            <img src="<?= esc($post['featured_image']) ?>" alt="<?= esc($post['title']) ?>" class="post-cover" />
         <?php endif; ?>
         <div>
             <?= $post['content'] /* предполагается, что контент уже безопасен и содержит HTML */ ?>

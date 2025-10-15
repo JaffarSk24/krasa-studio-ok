@@ -1,4 +1,5 @@
 <?php
+
 require_once 'includes/config.php';
 require_once 'includes/database.php';
 require_once 'includes/functions.php';
@@ -175,23 +176,78 @@ include 'includes/header.php';
     </div>
 </section>
 
-<!-- Additional SEO Content -->
-<section class="py-20 bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="prose prose-lg max-w-none fade-in">
-            <h2><?php echo e(t('pricing_seo_intro_title')); ?></h2>
-            <p><?php echo e(t('pricing_seo_intro_text')); ?></p>
-            
-            <h3><?php echo e(t('pricing_seo_pricing_title')); ?></h3>
-            <p><?php echo e(t('pricing_seo_pricing_text')); ?></p>
-            
-            <h3><?php echo e(t('pricing_seo_products_title')); ?></h3>
-            <p><?php echo e(t('pricing_seo_products_text')); ?></p>
-            
-            <h3><?php echo e(t('pricing_seo_booking_title')); ?></h3>
-            <p><?php echo e(t('pricing_seo_booking_text')); ?></p>
-        </div>
+<!-- Additional SEO Content (styled) -->
+<section class="py-20 bg-gradient-to-br from-olive-50 to-green-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Intro -->
+    <div class="text-center mb-12 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <?php echo e(t('pricing_seo_intro_title')); ?>
+      </h2>
+      <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+        <?php echo e(t('pricing_seo_intro_text')); ?>
+      </p>
     </div>
+
+    <!-- 3 feature cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in">
+      <!-- Pricing transparency -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg card-hover h-full">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-olive-600/10 flex items-center justify-center">
+            <i class="fas fa-list text-olive-700 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900">
+            <?php echo e(t('pricing_seo_pricing_title')); ?>
+          </h3>
+        </div>
+        <p class="text-gray-600">
+          <?php echo e(t('pricing_seo_pricing_text')); ?>
+        </p>
+      </div>
+
+      <!-- Products and tech -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg card-hover h-full">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-olive-600/10 flex items-center justify-center">
+            <i class="fas fa-flask text-olive-700 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900">
+            <?php echo e(t('pricing_seo_products_title')); ?>
+          </h3>
+        </div>
+        <p class="text-gray-600">
+          <?php echo e(t('pricing_seo_products_text')); ?>
+        </p>
+      </div>
+
+      <!-- Booking/WhatsApp -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg card-hover h-full flex flex-col">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-olive-600/10 flex items-center justify-center">
+            <i class="fas fa-calendar-check text-olive-700 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900">
+            <?php echo e(t('pricing_seo_booking_title')); ?>
+          </h3>
+        </div>
+
+        <p class="text-gray-600 mb-6">
+          <?php echo e(t('pricing_seo_booking_text')); ?>
+        </p>
+
+        <?php
+        // Получаем номер WhatsApp в цифровом формате безопасно:
+        if (function_exists('getWhatsappNumber')) {
+            $waPhone = getWhatsappNumber(true);
+        } elseif (defined('WA_PHONE_INTL')) {
+            $waPhone = WA_PHONE_INTL;
+        } else {
+            $waPhone = '';
+        }
+        $waPhone = is_scalar($waPhone) ? $waPhone : '';
+        ?>
+  </div>
 </section>
 
 <!-- CTA Section -->

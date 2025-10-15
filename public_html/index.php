@@ -53,7 +53,7 @@ include 'includes/header.php';
             <!-- Logo -->
             <div class="flex justify-center mb-8">
                 <div class="relative w-24 h-24 md:w-32 md:h-32">
-                    <img src="assets/images/Mini Логотип без фона.png" alt="Krása štúdio OK" class="w-full h-full object-contain drop-shadow-2xl">
+                    <img src="assets/images/Mini-white-noback.png" alt="Krása štúdio OK" class="w-full h-full object-contain drop-shadow-2xl">
                 </div>
             </div>
 
@@ -90,7 +90,7 @@ include 'includes/header.php';
             </div>
 
             <!-- Notino Booking Link -->
-            <div class="pt-8">
+            <div class="pt-8 pb-24 md:pb-0">
                 <p class="text-gray-300 mb-4">
                     <?php echo e(t('notino_booking')); ?>
                 </p>
@@ -103,7 +103,7 @@ include 'includes/header.php';
     </div>
 
     <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block">
         <div class="flex flex-col items-center text-white/70">
             <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center animate-bounce">
                 <div class="w-1 h-3 bg-white/60 rounded-full mt-2"></div>

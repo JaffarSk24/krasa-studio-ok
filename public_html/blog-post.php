@@ -23,8 +23,8 @@ if ($slug === '') {
 $db = new Database();
 $conn = $db->getConnection();
 
-$lang = $_GET['lang'] ?? ($_SESSION['lang'] ?? 'ru');
-$lang = in_array($lang, ['sk', 'ru', 'ua']) ? $lang : 'ru';
+$lang = $_GET['lang'] ?? ($_SESSION['lang'] ?? 'sk');
+$lang = in_array($lang, ['sk', 'ru', 'ua']) ? $lang : 'sk';
 
 $titleField = "title_{$lang}";
 $excerptField = "excerpt_{$lang}";
@@ -74,6 +74,35 @@ include __DIR__ . '/includes/header.php';
             <?= $post['content'] /* предполагается, что контент уже безопасен и содержит HTML */ ?>
         </div>
     </article>
+
+    <?php
+      // CTA запись на услугу (по slug статьи)
+      $currentSlug = $slug ?? '';
+      include __DIR__ . '/includes/blog_post_cta.php';
+    ?>
+
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.prefill-booking-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const payload = {
+        categoryId: button.dataset.categoryId,
+        serviceId: button.dataset.serviceId,
+        categoryName: button.dataset.categoryName,
+        serviceName: button.dataset.serviceName,
+        lang: button.dataset.lang
+      };
+      try {
+        sessionStorage.setItem('bookingPrefill', JSON.stringify(payload));
+      } catch (e) {
+        console.warn('sessionStorage unavailable', e);
+      }
+      window.location.href = button.dataset.target;
+    });
+  });
+});
+</script>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

@@ -7,9 +7,9 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <!-- Logo and About -->
                     <div class="lg:col-span-2">
-                        <a href="index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" class="flex items-center space-x-3 mb-4">
+                        <a href="/<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>" class="flex items-center space-x-3 mb-4">
                             <div class="relative w-12 h-12">
-                                <img src="assets/images/Mini Логотип без фона.png" alt="Krása štúdio OK" class="w-full h-full object-contain">
+                                <img src="assets/images/Mini-grey-noback.png" alt="Krása štúdio OK" class="w-full h-full object-contain">
                             </div>
                             <span class="font-bold text-xl text-olive-600">Krása štúdio "OK"</span>
                         </a>
@@ -117,7 +117,7 @@
             if (bookingSection) {
                 bookingSection.scrollIntoView({ behavior: 'smooth' });
             } else {
-                window.location.href = 'index.php<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>#booking';
+                window.location.href = '/<?php echo CURRENT_LANG !== DEFAULT_LANGUAGE ? '?lang=' . CURRENT_LANG : ''; ?>#booking';
             }
         }
         

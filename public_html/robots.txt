@@ -1,5 +1,6 @@
 # robots.txt
 User-agent: *
+Disallow: /index.php
 Disallow: /admin/
 Disallow: /includes/
 Disallow: /vendor/
@@ -16,3 +17,5 @@ Disallow: /*.log
 
 # For other
 Allow: /
+
+Sitemap: https://studio-krasy.sk/sitemaps/sitemap-index.xml

@@ -79,7 +79,7 @@ include 'includes/header.php';
                                 <?php echo e(t('opening_hours')); ?>
                             </h3>
                             <div class="text-gray-600">
-                                <p><?php echo e(t('hours_schedule')); ?></p>
+                                <p><?php echo t('hours_schedule'); ?></p>
                                 <p class="text-sm text-gray-500 mt-1">
                                     <?php echo e(t('weekend_closed_note')); ?>
                                 </p>

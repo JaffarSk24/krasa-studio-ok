@@ -176,54 +176,54 @@ include 'includes/header.php';
 
 <!-- Featured Categories -->
 <section class="py-20 bg-olive-600 text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 fade-in">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                <?php echo e(t('blog_topics_title')); ?>
-            </h2>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
-            <!-- Category 1 -->
-            <div class="text-center p-6">
-                <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-cut text-3xl text-white"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-3">
-                    <?php echo e(t('blog_topic_hair_title')); ?>
-                </h3>
-                <p class="text-olive-100">
-                    <?php echo e(t('blog_topic_hair_desc')); ?>
-                </p>
-            </div>
-
-            <!-- Category 2 -->
-            <div class="text-center p-6">
-                <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-spa text-3xl text-white"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-3">
-                    <?php echo e(t('blog_topic_cosmetology_title')); ?>
-                </h3>
-                <p class="text-olive-100">
-                    <?php echo e(t('blog_topic_cosmetology_desc')); ?>
-                </p>
-            </div>
-
-            <!-- Category 3 -->
-            <div class="text-center p-6">
-                <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-hand-sparkles text-3xl text-white"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-3">
-                    <?php echo e(t('blog_topic_manicure_title')); ?>
-                </h3>
-                <p class="text-olive-100">
-                    <?php echo e(t('blog_topic_manicure_desc')); ?>
-                </p>
-            </div>
-        </div>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">
+        <?php echo e(t('blog_topics_title')); ?>
+      </h2>
     </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+      <!-- Category 1: Aparátová kozmetika / Device-based -->
+      <div class="text-center p-6 bg-white/5 rounded-2xl card-hover">
+        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-microchip text-3xl text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">
+          <?php echo e(t('blog_topic_devices_title')); ?>
+        </h3>
+        <p class="text-olive-100">
+          <?php echo e(t('blog_topic_devices_desc')); ?>
+        </p>
+      </div>
+
+      <!-- Category 2: Masáže -->
+      <div class="text-center p-6 bg-white/5 rounded-2xl card-hover">
+        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-hand-holding-heart text-3xl text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">
+          <?php echo e(t('blog_topic_massage_title')); ?>
+        </h3>
+        <p class="text-olive-100">
+          <?php echo e(t('blog_topic_massage_desc')); ?>
+        </p>
+      </div>
+
+      <!-- Category 3: Laserová epilácia -->
+      <div class="text-center p-6 bg-white/5 rounded-2xl card-hover">
+        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-lightbulb text-3xl text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">
+          <?php echo e(t('blog_topic_laser_title')); ?>
+        </h3>
+        <p class="text-olive-100">
+          <?php echo e(t('blog_topic_laser_desc')); ?>
+        </p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- CTA Section -->
