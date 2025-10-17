@@ -8,12 +8,28 @@ if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
+
     // ETag на основе URL и языка
     $etag = '"' . md5(($CANONICAL ?: getCurrentUrl()) . '|' . CURRENT_LANG) . '"';
     header('ETag: ' . $etag);
-    if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
-        header('HTTP/1.1 304 Not Modified');
-        exit;
+
+    // Идентифицируем соцботов, чтобы не мешать им кешем и partial content
+    $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $isSocialBot = stripos($ua, 'facebookexternalhit') !== false
+                || stripos($ua, 'Twitterbot') !== false
+                || stripos($ua, 'TelegramBot') !== false
+                || stripos($ua, 'Slackbot') !== false;
+
+    // Для соцботов: всегда полный ответ (без Range) и без 304
+    if ($isSocialBot) {
+        header_remove('Accept-Ranges');
+        header('Accept-Ranges: none');
+    } else {
+        // Для обычных клиентов можно отдать 304 по ETag
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
+            header('HTTP/1.1 304 Not Modified');
+            exit;
+        }
     }
 }
 
@@ -21,8 +37,11 @@ if (empty($OG_IMAGE)) {
     $OG_IMAGE = (defined('SITE_URL') ? SITE_URL : '') . '/assets/images/1.webp';
 }
 
+// Абсолютный URL обложки для OG/Twitter
+$ogImage = $OG_IMAGE;
+
 $meta = [
-    'title' => $TITLE ?? 'Krása štúdio OK — Ružinov, Bratislava',
+    'title' => $TITLE ?? 'Krása štúdio OK — Salón krásy v Ružinove, Bratislava',
     'description' => $DESCRIPTION ?? '',
     'keywords' => $KEYWORDS ?? '',
 ];
@@ -103,7 +122,12 @@ $ogLocale = $ogLocaleMap[CURRENT_LANG] ?? 'sk_SK';
     <!-- Open Graph -->
     <meta property="og:title" content="<?php echo htmlspecialchars($OG_TITLE, ENT_QUOTES, 'UTF-8'); ?>">
     <meta property="og:description" content="<?php echo htmlspecialchars($OG_DESCRIPTION, ENT_QUOTES, 'UTF-8'); ?>">
-    <meta property="og:image" content="<?php echo htmlspecialchars($OG_IMAGE ?: ((defined('SITE_URL') ? SITE_URL : '') . '/assets/images/1.webp'), ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:image" content="<?php echo htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:image:secure_url" content="<?php echo htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Krása štúdio OK — salón krásy v Ružinove, Bratislava">
     <meta property="og:url" content="<?php echo htmlspecialchars($CANONICAL ?: getCurrentUrl(), ENT_QUOTES, 'UTF-8'); ?>">
     <meta property="og:type" content="<?php echo htmlspecialchars($OG_TYPE, ENT_QUOTES, 'UTF-8'); ?>">
     <meta property="og:locale" content="<?php echo htmlspecialchars($ogLocale, ENT_QUOTES, 'UTF-8'); ?>">
@@ -113,7 +137,7 @@ $ogLocale = $ogLocaleMap[CURRENT_LANG] ?? 'sk_SK';
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo htmlspecialchars($OG_TITLE, ENT_QUOTES, 'UTF-8'); ?>">
     <meta name="twitter:description" content="<?php echo htmlspecialchars($OG_DESCRIPTION, ENT_QUOTES, 'UTF-8'); ?>">
-    <meta name="twitter:image" content="<?php echo htmlspecialchars($OG_IMAGE ?: ((defined('SITE_URL') ? SITE_URL : '') . '/assets/images/1.webp'), ENT_QUOTES, 'UTF-8'); ?>">
+    <meta name="twitter:image" content="<?php echo htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8'); ?>">
     
     <?php
     $googleMapsUrl = 'https://maps.app.goo.gl/NRZ8C2yYqZVEJBML8';

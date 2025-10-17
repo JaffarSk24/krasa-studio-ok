@@ -24,6 +24,19 @@ Header always set Content-Security-Policy "default-src 'self' 'unsafe-inline' 'u
     AddOutputFilterByType DEFLATE application/x-javascript
 </IfModule>
 
+<IfModule mod_headers.c>
+  <FilesMatch "\.(php|html?)$">
+    Header always set Accept-Ranges "none"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_setenvif.c>
+  SetEnvIfNoCase User-Agent "facebookexternalhit" no-gzip
+  SetEnvIfNoCase User-Agent "Twitterbot" no-gzip
+  SetEnvIfNoCase User-Agent "TelegramBot" no-gzip
+  SetEnvIfNoCase User-Agent "Slackbot" no-gzip
+</IfModule>
+
 # Cache control
 <IfModule mod_expires.c>
     ExpiresActive On
@@ -105,3 +118,7 @@ RewriteRule ^includes/ - [R=404,L]
 
 # Перенаправление для статей блога
 RewriteRule ^blog/([a-z0-9\-]+)\.php$ /blog/article.php?slug=$1 [L,QSA]
+
+# Формирование правильного типа изображений
+AddType image/webp .webp
+AddType image/jpeg .jpg .jpeg .jpe
