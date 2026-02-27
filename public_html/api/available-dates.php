@@ -31,7 +31,9 @@ for ($date = clone $today; $date <= $end; $date->modify('+1 day')) {
     $slots = [];
     for ($h = 9; $h <= 20; $h++) {
         $slots[] = sprintf('%02d:00', $h);
-        $slots[] = sprintf('%02d:30', $h);
+        if ($h !== 20) {
+            $slots[] = sprintf('%02d:30', $h);
+        }
     }
 
     // Проверяем, есть ли хотя бы один слот, который не заблокирован
