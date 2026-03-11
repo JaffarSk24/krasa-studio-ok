@@ -9,6 +9,7 @@ $update = json_decode($content, true);
 // --- Вспомогательные функции для массовой блокировки/разблокировки ---
 require_once '../includes/telegram_helper.php';
 
+
 function getSlotsForDay($dateIso)
 {
     // Генерируем с 09:00 до 20:00 (те, что доступны для записи)
@@ -512,11 +513,9 @@ if (isset($update['message']) && isset($update['message']['text'])) {
             }
         }
 
-        $url = "https://api.telegram.org/bot" . TELEGRAM_BOT_TOKEN . "/sendMessage";
-        $params = [
+        callTelegramMethod('sendMessage', [
             'chat_id' => $chatId,
             'text' => $reply
-        ];
-        file_get_contents($url . "?" . http_build_query($params));
+        ]);
     }
 }
