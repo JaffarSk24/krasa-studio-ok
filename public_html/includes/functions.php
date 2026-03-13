@@ -1,6 +1,12 @@
 <?php
-require_once 'config.php';
-require_once 'database.php';
+// IDE stubs (не выполнятся, т.к. config.php определяет их первым)
+if (!defined('RECAPTCHA_SECRET_KEY')) define('RECAPTCHA_SECRET_KEY', '');
+if (!defined('SITE_NAME'))            define('SITE_NAME', '');
+if (!defined('TELEGRAM_BOT_TOKEN'))   define('TELEGRAM_BOT_TOKEN', '');
+if (!defined('TELEGRAM_CHAT_ID'))     define('TELEGRAM_CHAT_ID', '');
+
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/../lang/translations.php';
 
 // Функция для отправки сообщений в Telegram (через Cloudflare Worker proxy + cURL)
