@@ -1,4 +1,18 @@
 <?php
+// Немедленно отвечаем Telegram 200 OK, чтобы не получить Connection timed out
+ignore_user_abort(true);
+set_time_limit(120);
+http_response_code(200);
+header('Content-Type: application/json');
+header('Content-Length: 2');
+echo '{}';
+if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+} else {
+    ob_flush();
+    flush();
+}
+
 require_once '../includes/config.php';
 require_once '../includes/database.php';
 require_once '../includes/functions.php';

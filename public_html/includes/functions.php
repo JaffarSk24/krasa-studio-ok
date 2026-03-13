@@ -3,10 +3,10 @@ require_once 'config.php';
 require_once 'database.php';
 require_once __DIR__ . '/../lang/translations.php';
 
-// Функция для отправки сообщений в Telegram
+// Функция для отправки сообщений в Telegram (через Cloudflare Worker proxy + cURL)
 function sendToTelegram($message, $chatId = TELEGRAM_CHAT_ID) {
     $telegramToken = TELEGRAM_BOT_TOKEN;
-    $url = "https://api.telegram.org/bot{$telegramToken}/sendMessage";
+    $url = "https://krasa-studio.roccreate.workers.dev/bot{$telegramToken}/sendMessage";
 
     // Если пришёл массив → значит, это уже готовые параметры (с клавиатурой и т.д.)
     if (is_array($message)) {
@@ -26,20 +26,21 @@ function sendToTelegram($message, $chatId = TELEGRAM_CHAT_ID) {
         ];
     }
 
-    $options = [
-        'http' => [
-            'header'  => "Content-type: application/x-www-form-urlencoded
-",
-            'method'  => 'POST',
-            'content' => http_build_query($data),
-        ],
-    ];
-
-    $context = stream_context_create($options);
-    return file_get_contents($url, false, $context);
+    $ch = curl_init();
+    curl_setopt_array($ch, [
+        CURLOPT_URL            => $url,
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => http_build_query($data),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 15,
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/x-www-form-urlencoded'],
+    ]);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
 }
 
-// Функция для проверки reCAPTCHA
+// Функция для проверки reCAPTCHA (через cURL)
 function verifyRecaptcha($recaptchaResponse) {
     $secretKey = RECAPTCHA_SECRET_KEY;
     $url = 'https://www.google.com/recaptcha/api/siteverify';
@@ -50,17 +51,17 @@ function verifyRecaptcha($recaptchaResponse) {
         'remoteip' => $_SERVER['REMOTE_ADDR']
     ];
 
-    $options = [
-        'http' => [
-            'header'  => "Content-type: application/x-www-form-urlencoded
-",
-            'method'  => 'POST',
-            'content' => http_build_query($data),
-        ],
-    ];
-
-    $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
+    $ch = curl_init();
+    curl_setopt_array($ch, [
+        CURLOPT_URL            => $url,
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => http_build_query($data),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 10,
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/x-www-form-urlencoded'],
+    ]);
+    $result = curl_exec($ch);
+    curl_close($ch);
     $resultJson = json_decode($result, true);
 
     return $resultJson['success'] === true && $resultJson['score'] >= 0.5;
