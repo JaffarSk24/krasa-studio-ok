@@ -314,7 +314,7 @@ include 'includes/header.php';
                     <div class="flex items-center">
                         <i class="fas fa-map-marker-alt text-2xl mr-4"></i>
                         <a href="https://maps.app.goo.gl/eaVEMGG5NqS1wSJf6" target="_blank" rel="noopener" class="text-lg hover:underline">
-                            Tomášikova 11, Bratislava
+                            Sabinovská 3B, Bratislava
                         </a>
                     </div>
                 </div>

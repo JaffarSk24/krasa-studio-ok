@@ -65,7 +65,7 @@ include 'includes/header.php';
                                 <?php echo e(t('address')); ?>
                             </h3>
                             <a href="https://maps.app.goo.gl/eaVEMGG5NqS1wSJf6" target="_blank" rel="noopener" class="text-gray-600 hover:underline">
-                                Tomášikova 11, Bratislava
+                                Sabinovská 3B, Bratislava
                             </a>
                         </div>
                     </div>
@@ -114,7 +114,7 @@ include 'includes/header.php';
                 </h2>
                 
                 <div class="bg-gray-200 rounded-2xl overflow-hidden shadow-lg aspect-video">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2661.645323358107!2d17.16043657652402!3d48.1556426499032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476c8fa5863f1251%3A0x9b757d87dd266f74!2zT0sgxaF0w7pkaW8!5e0!3m2!1ssk!2ssk!4v1757076525477!5m2!1ssk!2ssk" 
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2661.645323358107!2d17.14721!3d48.16258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476c8fa5863f1251%3A0x9b757d87dd266f74!2zT0sgxaF0w7pkaW8!5e0!3m2!1ssk!2ssk!4v1757076525477!5m2!1ssk!2ssk" 
                             width="100%" 
                             height="100%" 
                             style="border:0;" 

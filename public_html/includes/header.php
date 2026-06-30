@@ -152,7 +152,7 @@ $ogLocale = $ogLocaleMap[CURRENT_LANG] ?? 'sk_SK';
         'telephone' => '+' . (defined('WHATSAPP_NUMBER') ? WHATSAPP_NUMBER : (getenv('WHATSAPP_NUMBER') ?: '421915310337')),
         'address' => [
             '@type' => 'PostalAddress',
-            'streetAddress' => 'Tomášikova 11',
+            'streetAddress' => 'Sabinovská 3B',
             'postalCode' => '82103',
             'addressLocality' => 'Bratislava',
             'addressCountry' => 'SK'
@@ -166,8 +166,8 @@ $ogLocale = $ogLocaleMap[CURRENT_LANG] ?? 'sk_SK';
         'priceRange' => '€€',
         'geo' => [
             '@type' => 'GeoCoordinates',
-            'latitude' => '48.155708',
-            'longitude' => '17.163077'
+            'latitude' => '48.16258',
+            'longitude' => '17.14721'
         ],
         // логотип компании (квадратный, PNG), используем твой файл
         'logo' => [

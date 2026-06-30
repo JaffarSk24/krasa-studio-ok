@@ -237,15 +237,8 @@ include 'includes/header.php';
         </p>
 
         <?php
-        // Получаем номер WhatsApp в цифровом формате безопасно:
-        if (function_exists('getWhatsappNumber')) {
-            $waPhone = getWhatsappNumber(true);
-        } elseif (defined('WA_PHONE_INTL')) {
-            $waPhone = WA_PHONE_INTL;
-        } else {
-            $waPhone = '';
-        }
-        $waPhone = is_scalar($waPhone) ? $waPhone : '';
+        // Получаем номер WhatsApp в цифровом формате
+        $waPhone = function_exists('getWhatsappNumber') ? getWhatsappNumber(true) : '';
         ?>
   </div>
 </section>

@@ -55,7 +55,7 @@
                             <div class="flex items-center text-gray-600">
                                 <i class="fas fa-map-marker-alt text-olive-600 mr-3"></i>
                                 <a href="https://maps.app.goo.gl/eaVEMGG5NqS1wSJf6" target="_blank" rel="noopener" class="hover:underline">
-                                    Tomášikova 11, Bratislava
+                                    Sabinovská 3B, Bratislava
                                 </a>
                             </div>
                         </div>
