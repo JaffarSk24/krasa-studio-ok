@@ -1,2 +1,15 @@
 .env
+.deploy.env
 public_html/includes/config.php
+
+# Локальные заметки и архивы переписки — в репозиторий не идут
+.agent/
+docs/archive/
+Chat_archive Krása štúdio OK/
+Chat_archive_Krása štúdio OK/
+
+# Служебное
+.DS_Store
+logs/
+*.bak
+public_html/api/cache_google_reviews.json
