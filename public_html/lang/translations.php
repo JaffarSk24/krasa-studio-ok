@@ -81,6 +81,7 @@ $translations = [
         'follow_us' => 'Sledujte nás',
         'hours_schedule' => 'Pondelok - Piatok: <br>9:00 - 21:00',
         'footer_description' => 'Váš salón krásy v srdci Bratislavy. Profesionálne služby pre vašu krásu a pohodu.',
+        'all_rights_reserved' => 'Všetky práva vyhradené.',
 
         // Контакты
         'contact_info' => 'Kontaktné informácie',
@@ -293,6 +294,7 @@ $translations = [
         'follow_us' => 'Следите за нами',
         'hours_schedule' => 'Понедельник - Пятница: <br>9:00 - 21:00',
         'footer_description' => 'Ваш салон красоты в сердце Братиславы. Профессиональные услуги для вашей красоты и комфорта.',
+        'all_rights_reserved' => 'Все права защищены.',
 
         // Контакты
         'contact_info' => 'Контактная информация',
@@ -505,6 +507,7 @@ $translations = [
         'follow_us' => 'Слідкуйте за нами',
         'hours_schedule' => 'Понеділок - Пʼятниця: <br>9:00 - 21:00',
         'footer_description' => 'Ваш салон краси у серці Братислави. Професійні послуги для вашої краси та комфорту.',
+        'all_rights_reserved' => 'Усі права захищені.',
 
         // Контакты
         'contact_info' => 'Контактна інформація',

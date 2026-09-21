@@ -77,7 +77,7 @@
                 <div class="border-t border-gray-200 pt-8 mt-8">
                     <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                         <p class="text-gray-600 text-sm">
-                            &copy; <?php echo date('Y'); ?> Krása štúdio "OK" s.r.o. Všetky práva vyhradené.
+                            &copy; <?php echo date('Y'); ?> Krása štúdio "OK" s.r.o. <?php echo t('all_rights_reserved'); ?>
                             <?php
                             $devCredit = [
                                 'sk' => ['Tvorba webu:', 'https://whiteeagles.sk/sk/'],
