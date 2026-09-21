@@ -78,6 +78,16 @@
                     <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                         <p class="text-gray-600 text-sm">
                             &copy; <?php echo date('Y'); ?> Krása štúdio "OK" s.r.o. Všetky práva vyhradené.
+                            <?php
+                            $devCredit = [
+                                'sk' => ['Tvorba webu:', 'https://whiteeagles.sk/sk/'],
+                                'ru' => ['Разработка сайта:', 'https://whiteeagles.sk/ru/'],
+                                'ua' => ['Розробка сайту:', 'https://whiteeagles.sk/ru/'],
+                            ];
+                            [$devLabel, $devUrl] = $devCredit[CURRENT_LANG] ?? $devCredit['sk'];
+                            ?>
+                            <span class="mx-1">&middot;</span>
+                            <?php echo $devLabel; ?> <a href="<?php echo $devUrl; ?>" target="_blank" rel="noopener" class="hover:text-olive-600 transition-colors duration-200">White Eagles &amp; Co.</a>
                         </p>
                         
                         <!-- Social Links -->
