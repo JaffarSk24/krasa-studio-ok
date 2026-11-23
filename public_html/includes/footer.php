@@ -80,9 +80,9 @@
                             &copy; <?php echo date('Y'); ?> Krása štúdio "OK" s.r.o. <?php echo t('all_rights_reserved'); ?>
                             <?php
                             $devCredit = [
-                                'sk' => ['Tvorba webu:', 'https://whiteeagles.sk/sk/'],
-                                'ru' => ['Разработка сайта:', 'https://whiteeagles.sk/ru/'],
-                                'ua' => ['Розробка сайту:', 'https://whiteeagles.sk/ru/'],
+                                'sk' => ['Tvorba webu:', 'https://whiteeagles.sk/sk/service/tvorba-web-stranok/'],
+                                'ru' => ['Разработка сайта:', 'https://whiteeagles.sk/ru/service/sozdanie-sajtov/'],
+                                'ua' => ['Розробка сайту:', 'https://whiteeagles.sk/ru/service/sozdanie-sajtov/'],
                             ];
                             [$devLabel, $devUrl] = $devCredit[CURRENT_LANG] ?? $devCredit['sk'];
                             ?>
